@@ -12,7 +12,9 @@ class OrderController extends ApiController
     /**
      * Display a listing of the resource.
      */
-    public function index() {}
+    public function index()
+    {
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -29,48 +31,48 @@ class OrderController extends ApiController
     {
 
 
-    $total = 0;        
-    $quantity = 0;     
-    $productsData = $request->input('products');  
-
-    
-    foreach ($productsData as $item) {
-      
-        $product = Product::find($item['id']);
-
-     
-        $price = $product->getRawOriginal('price');  
-        $productQuantity = $item['quantity'];  
-
-        $total += $price * $productQuantity;
-
-       
-        $quantity += $productQuantity;
-    }
-
-   
-    $tax = $total * 0.15;
-
-    $order = Order::create([
-        'total'    => $total,
-        'tax'      => $tax,
-        'quantity' => $quantity,
-    ]);
+        $total = 0;
+        $quantity = 0;
+        $productsData = $request->input('products');
 
 
-    foreach ($productsData as $item) {
-        $order->Orderproducts()->create([
-            'product_id' => $item['id'],
-            'quantity'   => $item['quantity'],
+        foreach ($productsData as $item) {
+
+            $product = Product::find($item['id']);
+
+
+            $price = $product->getRawOriginal('price');
+            $productQuantity = $item['quantity'];
+
+            $total += $price * $productQuantity;
+
+
+            $quantity += $productQuantity;
+        }
+
+
+        $tax = $total * 0.15;
+
+        $order = Order::create([
+            'total' => $total,
+            'tax' => $tax,
+            'quantity' => $quantity,
         ]);
-    }
 
-   
-    return $this->sendResponce(
-        new OrderResource($order->load('Orderproducts')),
-        __('Order_stored_successfully'),
-        201
-    );
+
+        foreach ($productsData as $item) {
+            $order->Orderproducts()->create([
+                'product_id' => $item['id'],
+                'quantity' => $item['quantity'],
+            ]);
+        }
+
+
+        return $this->sendResponce(
+            new OrderResource($order->load('Orderproducts')),
+            __('Order_stored_successfully'),
+            201
+        );
 
 
     }

@@ -8,6 +8,7 @@ use App\Http\Requests\ProductRequest;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use App;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class ProductController extends ApiController
 {
@@ -24,6 +25,7 @@ class ProductController extends ApiController
             $products = $products->where('name', 'like', '%' . $search . '%');
         }
 
+
         /*
          * $limit = $request->input('limit', 10); //NOTE -  - number of products in a page
          *
@@ -39,7 +41,9 @@ class ProductController extends ApiController
 
         // NOTE - after with()fun we need ->get() because is acollection .
 
-        $products = $products->with('categories')->get();  /* ->pluck('name', 'id') */
+        $products = $products->with('categories')->paginate();  /* ->pluck('name', 'id') */
+
+//        $products = $products->categories()->where('name->en','mobile');
 
         // REVIEW -  $products = $products->filter(fn($product) => $product->price > 1000);
 
@@ -55,7 +59,9 @@ class ProductController extends ApiController
 
         return $this->sendResponce(
             ProductResource::collection($products),
-            __('Products_retrieved_successfully')
+            __('Products_retrieved_successfully') ,
+            200 ,
+            true
         );
     }
 
@@ -72,7 +78,6 @@ class ProductController extends ApiController
      */
     public function store(ProductRequest $request)
     {
-     
 
         $category_ids = $request->category_ids;  // REVIEW  - This ids will i hold from request as array .
 
@@ -81,10 +86,25 @@ class ProductController extends ApiController
             'en' => $request->name_en,
             'ar' => $request->name_ar
         ]);
+        $product->status = $request->status ;
         $product->save();
+
+
+//         Store the uploaded image to the product instance in the default media collection ('default')
+        $product->addMedia($request->file('image'))
+            ->toMediaCollection('main-image');
+
+
+        // Store multiple gallery images to the product instance in the 'gallery' media collection
+        foreach ($request->gallery ?? [] as $image){
+            $product->addMedia($image)
+                    ->toMediaCollection('gallery');
+        }
+
 
         $product->categories()->attach($category_ids);  // REVIEW - attach: Adding Records to a Many-to-Many Relationship .
 
+        $product->colors()->sync($request->color_ids);
         // Return JSON response
 
         return $this->sendResponce(
@@ -99,7 +119,7 @@ class ProductController extends ApiController
      */
     public function show(string $id, Request $request)
     {
-        $product = Product::find($id);
+        $product = Product::with('media')->withTrashed()->find($id);
 
         if (!$product) {
             return $this->sendError(__('This_Product_Not_found'), 404);
@@ -183,6 +203,33 @@ class ProductController extends ApiController
         }
     }
 
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function forceDestroy(string $id)
+    {
+        $product = Product::withTrashed()->find($id);
+        if ($product) {
+            $product->forceDelete();
+
+            return $this->sendResponce(null, __('The_Product_Is_Deleted_Successfully'));
+        } else {
+            return $this->sendError('This Product Not found', 404);
+        }
+    }
+
+    public function clearMedia($id){
+        $product = Product::withTrashed()->find($id);
+        if ($product) {
+            $product->clearMediaCollection('gallery');
+            $product->clearMediaCollection('main-image');
+
+            return $this->sendResponce(null, __('The_Product_Is_Deleted_Successfully'));
+        } else {
+            return $this->sendError('This Product Not found', 404);
+        }
+    }
+
     public function retrieve_active_records()
     {
         $activeProducts = Product::all();  // SECTION -  Retrieves only active products .
@@ -221,4 +268,5 @@ class ProductController extends ApiController
             __('The_Product_restored_Successfully')
         );
     }
+
 }

@@ -47,6 +47,42 @@ return [
             'report' => false,
         ],
 
+        'products' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/products'),
+            'url' => env('APP_URL').'/storage/products',
+            'visibility' => 'public',
+            'throw' => false,
+            'report' => false,
+        ],
+
+        'main_image' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/products/images'),
+            'url' => env('APP_URL').'/storage/products/images',
+            'visibility' => 'public',
+            'throw' => false,
+            'report' => false,
+        ],
+
+        'gallery' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/products/gallery'),
+            'url' => env('APP_URL').'/storage/products/gallery',
+            'visibility' => 'public',
+            'throw' => false,
+            'report' => false,
+        ],
+
+        'color' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/color'),
+            'url' => env('APP_URL').'/storage/color',
+            'visibility' => 'public',
+            'throw' => false,
+            'report' => false,
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

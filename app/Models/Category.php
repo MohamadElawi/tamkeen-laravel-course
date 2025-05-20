@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\StatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 use Illuminate\Database\Eloquent\Model;
@@ -20,11 +21,25 @@ class Category extends Model
     public $translatable = ['name'];
     protected $fillable = [
 
-        'name'
+        'name' ,
+        'slug' ,
+        'status'
     ];
+
+    protected $casts = [
+        'status' => StatusEnum::class
+    ];
+
     public function products()
     {
         return $this->belongsToMany(Product::class, 'category_products');
     }
     /*  */
+
+    public static function booted()
+    {
+        static::creating(function($category){
+//            dd($category);
+        });
+    }
 }

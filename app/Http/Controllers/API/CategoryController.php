@@ -13,6 +13,8 @@ use App;
 
 class CategoryController extends ApiController
 {
+    use App\Traits\SluggableTrait;
+
     /**
      * Display a listing of the resource.
      */
@@ -26,7 +28,36 @@ class CategoryController extends ApiController
     } */
     public function index(Request $request)
     {
-        $categories = Category::orderBy('id', 'Asc')->with('products')->get();
+        // Get categories by name
+//        $query = Category::orderBy('id', 'Asc');
+//
+//        if ($request->name_en) {
+//            $query->where('name->en', $request->id);
+//        }
+//
+//        $categories = $query
+//            ->when($request->name_en, fn($q) => $q->where('name->en', $request->name_en))
+//            ->with('products')->get();
+
+
+         // Get all categories with their related products
+//        $categories = Category::with('products')->get();
+
+
+         // Get categories that have products with price equal to "1,000.00"
+        $categories = Category::whereHas('products', function ($q) {
+            $q->where('price', '1,000.00');
+        })->get();
+
+//        dd();
+//        collect();
+        // Get categories that have products with their related products
+//        $categories = Category::withWhereHas('products')->get();
+
+
+        // Get categories where has products with price equal to 1000.00
+        $categories = Category::whereRelation('products', 'price', 1000.00)
+            ->get();
 
         return $this->sendResponce(
             CategoryResource::collection($categories),
@@ -47,13 +78,15 @@ class CategoryController extends ApiController
      */
     public function store(CategoryRequest $request)
     {
-       
-        $category = Category::create($request->validated());
+        //        $category = Category::create($request->validated());
+        $category = new Category();
 
         $category->setTranslations('name', [
             'en' => $request->name_en,
             'ar' => $request->name_ar
         ]);
+
+        $category->slug = $this->generateSlug($request->name_en);
         $category->save();
 
         return $this->sendResponce(
@@ -124,5 +157,20 @@ class CategoryController extends ApiController
         } else {
             return $this->sendError(__('This_category_Not_found'), 404);
         }
+    }
+
+
+    public function getProductsByCategory($categoryId){
+        $category = Category::find($categoryId);
+
+        if(!$category)
+            abort(404);
+
+        return $category->products()->where('price',1000.00)->get();
+    }
+
+    public function setName()
+    {
+        // TODO: Implement setName() method.
     }
 }

@@ -16,6 +16,8 @@
     "you_must_enter_the_name_of_product":"يجب عليك ادخال اسم المنتج !",
     "the price_should_be_number_betwwen_10->1000":"يجب أن يكون السعر بين ال$10 وال$1000",
     "please_enter_the_description_with_lowercase_letters":"رجاء، عليك ادخال وصف المنتج بأحرف صغيرة",
-    "Order_stored_successfully":"تم انشاء هذا الطلب بنجاح "
+    "Order_stored_successfully":"تم انشاء هذا الطلب بنجاح " ,
+    "Active" : "فعال" ,
+    "Inactive" : "غير فعال"
 
 }

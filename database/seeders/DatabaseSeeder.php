@@ -15,13 +15,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory(1)->create();
+//        User::factory(1)->create();
+//
+//        Category::factory(10)->create();
 
-        Category::factory(10)->create();
 
+//        Product::factory(20)->create()->each(function ($product) {
+//            $product->categories()->attach(Category::inRandomOrder()->first());
+//        });
 
-        Product::factory(20)->create()->each(function ($product) {
-            $product->categories()->attach(Category::inRandomOrder()->first());
-        });
+        $this->call(CategorySeeder::class);
+
     }
 }
