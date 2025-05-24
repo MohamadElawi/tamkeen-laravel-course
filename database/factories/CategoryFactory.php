@@ -54,4 +54,6 @@ class CategoryFactory extends Factory
 
         ];
     }
+
+
 }

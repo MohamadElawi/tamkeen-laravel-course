@@ -11,6 +11,15 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
 
+    dd( (int) config('taxes.tax_rate'));
+
+    dump(  config('app.locale'));
+
+    config(['app.locale' => 'ar']);
+
+    dump(config('app.locale'));
+
+
 //    $product = Product::where('status',StatusEnum::ACTIVE)->first();
 //
 //    dd($product->status->translate());

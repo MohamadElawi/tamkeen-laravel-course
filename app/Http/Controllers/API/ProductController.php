@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\API\ApiController;
+use App\Http\Requests\UpdateColorsRequest;
 use App\Http\Resources\ProductResource;
 use App\Http\Requests\ProductRequest;
 use App\Models\Product;
 use Illuminate\Http\Request;
-use App;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
+
+
 
 class ProductController extends ApiController
 {
@@ -104,7 +105,12 @@ class ProductController extends ApiController
 
         $product->categories()->attach($category_ids);  // REVIEW - attach: Adding Records to a Many-to-Many Relationship .
 
+        $product->categories()->detach($category_ids);
+
+
         $product->colors()->sync($request->color_ids);
+
+        $product->colors()->syncWithoutDetaching($request->color_ids);
         // Return JSON response
 
         return $this->sendResponce(
@@ -267,6 +273,37 @@ class ProductController extends ApiController
             new ProductResource($product),
             __('The_Product_restored_Successfully')
         );
+    }
+
+    public function updateProductColors($product_id , UpdateColorsRequest $request ){
+        $product = Product::findOrFail($product_id);
+
+        // fetch color ids without duplicating
+        $color_ids = array_unique($request->color_ids);
+
+
+          // Attach colors - adds new relations without affecting existing ones
+          // Can create duplicate relations if called multiple times with same IDs
+//        $product->colors()->attach($color_ids);
+
+          // Detach colors - removes specified color relations
+          // If called with no parameters, removes ALL colors from this product
+//        $product->colors()->detach($color_ids);
+
+
+          // Sync colors - sets the exact list of colors, removing any not in this array
+//        $product->colors()->sync($color_ids);
+
+
+        // Sync color IDs to the product without detaching any existing colors
+        // This will only add new colors that aren't already attached
+        $product->colors()->syncWithoutDetaching($color_ids);
+
+        return $this->sendResponce(
+            new ProductResource($product),
+            __('Product colors updated successfully')
+        );
+
     }
 
 }

@@ -38,6 +38,7 @@ Route::get('soft_deleted_records', [ProductController::class, 'soft_deleted_reco
 
 Route::delete('products/force-delete/{product_id}', [ProductController::class, 'forceDestroy']);
 
+Route::post('products/update-color/{product_id}',[ProductController::class , 'updateProductColors']);
 Route::get('products/clear-media/{product_id}',[ProductController::class ,'clearMedia']);
 
 Route::get('only_soft_deleted_records', [ProductController::class, 'only_soft_deleted_records']);

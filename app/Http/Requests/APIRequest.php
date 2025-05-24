@@ -8,6 +8,15 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 
 class APIRequest extends FormRequest
 {
+
+    /**
+     * Determine if the user is authorized to make this request.
+     */
+    public function authorize(): bool
+    {
+        return true;
+    }
+
     public function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(response()->json([

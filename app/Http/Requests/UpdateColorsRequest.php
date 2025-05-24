@@ -1,11 +1,11 @@
 <?php
 
-namespace {{ namespace }};
+namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use App\Http\Requests\APIRequest;
+use Illuminate\Foundation\Http\FormRequest;
 
-class {{ class }} extends APIRequest
+class UpdateColorsRequest extends APIRequest
 {
 
 
@@ -17,7 +17,8 @@ class {{ class }} extends APIRequest
     public function rules(): array
     {
         return [
-            //
+            'color_ids' => ['required' ,'array','min:1'] ,
+            'color_ids.*' => ['required' ,'exists:colors,id']
         ];
     }
 }
