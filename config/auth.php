@@ -40,6 +40,12 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
+        'user' => [
+            'driver' => 'sanctum', // passport , JWT
+            'provider' => 'users',
+        ],
+
     ],
 
     /*
@@ -65,10 +71,15 @@ return [
             'model' => env('AUTH_MODEL', App\Models\User::class),
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+//        'admins' => [
+//            'driver' => 'eloquent',
+//            'model' => App\Models\Admin::class,
+//        ],
+//
+//         'users' => [
+//             'driver' => 'database',
+//             'table' => 'users',
+//         ],
     ],
 
     /*

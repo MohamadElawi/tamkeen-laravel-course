@@ -17,7 +17,7 @@ class Localization
     public function handle(Request $request, Closure $next): Response
     {
 
-        App::setLocale($request->header('Accept-Language', config('app.locale')));
+//        App::setLocale($request->header('Language', config('app.locale')));
 
 
         $response = $next($request);
