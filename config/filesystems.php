@@ -56,6 +56,15 @@ return [
             'report' => false,
         ],
 
+        'user' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/users'),
+            'url' => env('APP_URL').'/storage/users',
+            'visibility' => 'public',
+            'throw' => false,
+            'report' => false,
+        ],
+
         'main_image' => [
             'driver' => 'local',
             'root' => storage_path('app/public/products/images'),

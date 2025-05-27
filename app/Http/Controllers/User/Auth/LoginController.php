@@ -20,7 +20,7 @@ class LoginController extends ApiController
             return $this->sendError('Invalid credentials');
         }
 
-       $user->access_token = $user->createToken('user_token')->plainTextToken ;
+       $user->access_token = $user->createToken('user_token',['test-token' ,'test-ability'])->plainTextToken ;
 
         return $this->sendResponce(LoginResource::make($user),'User Logged in successfully');
     }
