@@ -2,7 +2,7 @@
 
 namespace App\Http\Resources;
 
-use App\Enums\Enums\Media\ProductMediaEnum;
+use App\Enum\Media\ProductMediaEnum;
 
 use App\Traits\TaxCalculatorTrait;
 use Illuminate\Http\Request;

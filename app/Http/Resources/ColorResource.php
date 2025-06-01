@@ -2,7 +2,7 @@
 
 namespace App\Http\Resources;
 
-use App\Enums\Enums\Media\ColorMediaEnum;
+use App\Enums\Media\ColorMediaEnum;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Enums\Enums\Media\ColorMediaEnum;
+use App\Enums\Media\ColorMediaEnum;
 use App\Enums\StatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ColorRequest;

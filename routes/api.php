@@ -38,8 +38,8 @@ Route::get('soft_deleted_records', [ProductController::class, 'soft_deleted_reco
 
 Route::delete('products/force-delete/{product_id}', [ProductController::class, 'forceDestroy']);
 
-Route::post('products/update-color/{product_id}',[ProductController::class , 'updateProductColors']);
-Route::get('products/clear-media/{product_id}',[ProductController::class ,'clearMedia']);
+Route::post('products/update-color/{product_id}', [ProductController::class, 'updateProductColors']);
+Route::get('products/clear-media/{product_id}', [ProductController::class, 'clearMedia']);
 
 Route::get('only_soft_deleted_records', [ProductController::class, 'only_soft_deleted_records']);
 
@@ -47,17 +47,17 @@ Route::get('restore_product/{id}', [ProductController::class, 'restore_product']
 
 Route::get('getName/{id}', [ProductController::class, 'getName']);
 
-Route::get('users',[UserController::class ,'index']);
+Route::get('users', [UserController::class, 'index']);
 
 
-Route::get('get-products-by-categoryId/{category_id}',[CategoryController::class ,'getProductsByCategory']);
+Route::get('get-products-by-categoryId/{category_id}', [CategoryController::class, 'getProductsByCategory']);
 
-Route::get('login',[LoginController::class,'login']);
+Route::get('login', [LoginController::class, 'login']);
 
 
-Route::apiResource('colors',ColorController::class);
+Route::apiResource('colors', ColorController::class);
 
-Route::post('test-storage',function(Request $request){
+Route::post('test-storage', function (Request $request) {
 //    dd($request->file('file'));
 
 //    $storage = Storage::put('image.jpg' ,file_get_contents($request->file('file')));
@@ -76,3 +76,11 @@ Route::post('test-storage',function(Request $request){
 
 //    return $product->getMedia();
 });
+
+
+Route::get('UnAuthenticated', function () {
+    return response()->json([
+        "success" => true,
+        "message" => "UnAuthenticated"
+    ]);
+})->name('UnAuthenticated');

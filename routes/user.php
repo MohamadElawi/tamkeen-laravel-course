@@ -17,6 +17,9 @@ Route::post('profile',[ProfileController::class ,'update'])->middleware('auth:us
 
 
 
+Route::view('products','products.create')->middleware('auth');
+
+
 Route::get('test-token',function(){
    return  auth()->user();
 })->middleware(['auth:user','abilities:test-token,test-ability']);

@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Enums\Enums\Media\ProductMediaEnum;
+use App\Enums\Media\ProductMediaEnum;
 use App\Enums\StatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

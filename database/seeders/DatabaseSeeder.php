@@ -24,7 +24,8 @@ class DatabaseSeeder extends Seeder
 //            $product->categories()->attach(Category::inRandomOrder()->first());
 //        });
 
-        $this->call(CategorySeeder::class);
+//        $this->call(CategorySeeder::class);
+        $this->call(AdminSeeder::class);
 
     }
 }

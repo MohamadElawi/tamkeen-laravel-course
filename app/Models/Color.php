@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Enums\Enums\Media\ColorMediaEnum;
+use App\Enums\Media\ColorMediaEnum;
 use App\Enums\StatusEnum;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
