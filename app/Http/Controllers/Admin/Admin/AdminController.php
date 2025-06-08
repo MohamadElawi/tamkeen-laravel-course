@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin\Admin;
 
+use App\Enums\PermissionEnum;
+use App\Enums\RoleEnum;
 use App\Enums\StatusEnum;
 use App\Http\Controllers\API\ApiController;
 use App\Http\Controllers\Controller;
@@ -17,7 +19,8 @@ class AdminController extends ApiController implements HasMiddleware
     public static function middleware()
     {
         return [
-            new Middleware('permission:create admins',only: ['store'])
+            new Middleware('permission:'.PermissionEnum::CREATE_ADMINS->value ,only: ['store']),
+            new Middleware('permission:'.PermissionEnum::VIEW_ADMINS->value ,only: ['index','show']),
         ];
     }
 
@@ -38,11 +41,13 @@ class AdminController extends ApiController implements HasMiddleware
 
         $admin = Admin::create($data);
 
+        $admin->assignRole(RoleEnum::ADMIN);
+
         return $this->sendResponce(AdminResource::make($admin) ,'Admin created successfully');
     }
 
     public function show($id){
-        return $admin = Admin::with(['roles','permissions'])->findOrFail($id);
+        $admin = Admin::with(['roles','permissions'])->findOrFail($id);
 
         return $this->sendResponce(AdminResource::make($admin),
             'Admin retrieved successfully');

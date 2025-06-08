@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Enums\PermissionEnum;
+use App\Enums\RoleEnum;
 use App\Enums\StatusEnum;
 use App\Models\Admin;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -26,7 +28,12 @@ class AdminSeeder extends Seeder
 
 
         $admin = Admin::where('email','super@gmail.com')->first();
-        $admin->assignRole('super-admin');
+        $admin->assignRole(RoleEnum::SUPER_ADMIN);
 
+
+        $admin = Admin::where('email','admin@gmail.com')->first();
+        $admin->assignRole(RoleEnum::ADMIN);
+
+        $admin->givePermissionTo(PermissionEnum::VIEW_ADMINS);
     }
 }

@@ -21,7 +21,12 @@ class AdminResource extends JsonResource
             'phone' => $this->phone ,
             'status' => $this->status->translate(),
             'status_value' => $this->status ,
-            'created_at' => formatDate($this->created_at)
+            'created_at' => formatDate($this->created_at) ,
+//            'permission_names' => PermissionResource::collection($this->permissions)
+            'permission_names' => $this->getPermissionNames(),
+            'role_names' => $this->getRoleNames()
+
         ];
+
     }
 }
