@@ -36,7 +36,7 @@ class Product extends Model implements HasMedia
 
     public function categories()
     {
-        return $this->belongsToMany(Category::class, 'category_products')->withPivot();
+        return $this->belongsToMany(Category::class, 'category_products');
     }
     public function orders()
     {

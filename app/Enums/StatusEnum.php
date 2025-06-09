@@ -2,10 +2,9 @@
 
 namespace App\Enums;
 
-enum StatusEnum : string
+enum StatusEnum: string
 {
-    case ACTIVE = 'active' ;
-
+    case ACTIVE = 'active';
     case INACTIVE = 'inactive';
 
     public function translate(){
