@@ -25,8 +25,8 @@ class ProductResource extends JsonResource
             'price_after_tax' => $this->calculateTax($this->price),
             'media' => $this->media ,
             'colors' => ColorResource::collection($this->colors),
-            'image' => $this->getFirstMediaUrl(ProductMediaEnum::MAIN_IMAGE->value) ,
-            'gallery' => $this->getMedia(ProductMediaEnum::GALLERY->value)
+            'image' => $this->getFirstMediaUrl(\App\Enums\Media\ProductMediaEnum::MAIN_IMAGE->value) ,
+            'gallery' => $this->getMedia(\App\Enums\Media\ProductMediaEnum::GALLERY->value)
                 ->map(function($image){
                 return $image->original_url ;
             }) ,

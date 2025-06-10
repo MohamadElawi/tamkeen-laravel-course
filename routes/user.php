@@ -15,11 +15,6 @@ Route::get('logout',[LoginController::class ,'logout'])->middleware('auth:user')
 Route::get('profile',[ProfileController::class ,'show'])->middleware('auth:user');
 Route::post('profile',[ProfileController::class ,'update'])->middleware('auth:user');
 
-
-
-Route::view('products','products.create')->middleware('auth');
-
-
 Route::get('test-token',function(){
    return  auth()->user();
 })->middleware(['auth:user','abilities:test-token,test-ability']);

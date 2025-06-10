@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\API;
 
 use App\Enums\Media\ColorMediaEnum;
 use App\Enums\StatusEnum;

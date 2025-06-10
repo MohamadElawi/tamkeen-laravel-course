@@ -10,11 +10,12 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements  HasMedia
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable ,HasApiTokens ,InteractsWithMedia;
+    use HasFactory, Notifiable ,HasApiTokens ,InteractsWithMedia ,HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -26,6 +27,8 @@ class User extends Authenticatable implements  HasMedia
         'email',
         'password',
     ];
+
+    protected $guard_name = 'user';
 
     /**
      * The attributes that should be hidden for serialization.

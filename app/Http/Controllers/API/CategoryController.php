@@ -49,8 +49,6 @@ class CategoryController extends ApiController
             $q->where('price', '1,000.00');
         })->get();
 
-//        dd();
-//        collect();
         // Get categories that have products with their related products
 //        $categories = Category::withWhereHas('products')->get();
 
