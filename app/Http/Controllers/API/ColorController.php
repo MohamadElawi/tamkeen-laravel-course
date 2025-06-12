@@ -8,16 +8,24 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ColorRequest;
 use App\Http\Resources\ColorResource;
 use App\Models\Color;
+use App\Services\ColorService;
 use Illuminate\Http\Request;
 
 class ColorController extends ApiController
 {
+    protected $colorService ;
+
+    public function __construct(ColorService $colorService)
+    {
+        $this->colorService = $colorService ;
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        $colors = Color::paginate($request->count);
+        $colors = $this->colorService->getAll($request->count);
         return $this->sendResponce(
             ColorResource::collection($colors) ,
             'Retrived colors successfully',
@@ -34,13 +42,7 @@ class ColorController extends ApiController
         $data = $request->validated();
         $data['status'] = StatusEnum::INACTIVE ;
 
-        $color = Color::create($request->validated());
-
-        if($request->filled('image')){
-            $color->addMedia($request->file('image'))
-                ->toMediaCollection(ColorMediaEnum::MAIN_IMAGE->value);
-        }
-
+        $color = $this->colorService->create($data);
 
         return $this->sendResponce($color ,'Color Created successfully');
     }
@@ -50,15 +52,9 @@ class ColorController extends ApiController
      */
     public function show(string $id)
     {
-        $color = Color::findOrFail($id);
+        $color = $this->colorService->getColorById($id);
+        return $this->sendResponce(ColorResource::make($color) ,'Color retrived successfully');
 
-//        if($color){
-            return $this->sendResponce(ColorResource::make($color) ,'Color retrived successfully');
-//        }
-
-//        else{
-//            abort(404);
-//        }
     }
 
     /**
@@ -66,14 +62,7 @@ class ColorController extends ApiController
      */
     public function update(ColorRequest $request, string $id)
     {
-        $color = Color::findOrFail($id);
-
-        $color->update($request->validated());
-
-        if($request->filled('image')){
-            $color->clearMediaCollection(ColorMediaEnum::MAIN_IMAGE->value);
-            $color->addMedia($request->file('image'))->toMediaCollection(ColorMediaEnum::MAIN_IMAGE->value);
-        }
+        $color = $this->colorService->update($id , $request->validated());
 
         return $this->sendResponce($color ,'Color Updated successfully');
     }
@@ -83,8 +72,7 @@ class ColorController extends ApiController
      */
     public function destroy(string $id)
     {
-        $color = Color::findOrFail($id);
-        $color->delete();
+        $this->colorService->delete($id);
         return $this->sendResponce(null ,  'Color Deleted successfully');
     }
 }

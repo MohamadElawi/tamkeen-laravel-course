@@ -21,6 +21,9 @@ class CategoryRequest extends APIRequest
     public function rules(): array
     {
         return [
+//            'name' => 'required|array' ,
+//            'name.en' => 'required|string|max:255' ,
+//            'name.ar' => 'required|string|max:255'
             'name_ar' => 'required|string|max:255|',
             'name_en' => 'required|string|max:255|'
         ];
