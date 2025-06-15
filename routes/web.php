@@ -45,19 +45,19 @@ Route::middleware(['auth:admin-web'])->prefix('admin')->group(function () {
     Route::post('/products/{product}/toggle-status', [AdminProductController::class, 'toggleStatus'])
         ->name('admin.products.toggle-status');
 
-    // Admin Product Management Routes
-    Route::get('/manage/admins', [AdminManagementController::class, 'index'])->name('admin.manage.index');
-    Route::get('/manage/admins/create', [AdminManagementController::class, 'create'])->name('admin.manage.create');
-    Route::post('/manage/admins', [AdminManagementController::class, 'store'])->name('admin.manage.store');
-    Route::get('/manage/admins/{admin}', [AdminManagementController::class, 'show'])->name('admin.manage.show');
-    Route::get('/manage/admins/{admin}/edit', [AdminManagementController::class, 'edit'])->name('admin.manage.edit');
-    Route::put('/manage/admins/{admin}', [AdminManagementController::class, 'update'])->name('admin.manage.update');
-    Route::delete('/manage/admins/{admin}', [AdminManagementController::class, 'destroy'])->name('admin.manage.destroy');
-    Route::post('/manage/admins/{admin}/toggle-status', [AdminManagementController::class, 'toggleStatus'])
-        ->name('admin.products.toggle-status');
+    // Admin Management Routes
+    Route::middleware(['auth'])->prefix('manage')->name('manage.')->group(function () {
+        Route::get('/admins', [AdminManagementController::class, 'index'])->name('admins');
+        Route::get('/admins/create', [AdminManagementController::class, 'create'])->name('admins.create');
+        Route::post('/admins', [AdminManagementController::class, 'store'])->name('admins.store');
+        Route::get('/admins/{admin}', [AdminManagementController::class, 'show'])->name('admins.show');
+        Route::get('/admins/{admin}/edit', [AdminManagementController::class, 'edit'])->name('admins.edit');
+        Route::put('/admins/{admin}', [AdminManagementController::class, 'update'])->name('admins.update');
+        Route::delete('/admins/{admin}', [AdminManagementController::class, 'destroy'])->name('admins.destroy');
+        Route::post('/admins/{admin}/toggle-status', [AdminManagementController::class, 'toggleStatus'])
+            ->name('admins.toggle-status');
+    });
 });
-
-
 
 // Include Auth Routes
 require __DIR__.'/auth.php';

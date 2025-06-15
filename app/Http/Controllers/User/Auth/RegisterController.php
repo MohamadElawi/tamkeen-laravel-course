@@ -17,7 +17,7 @@ class RegisterController extends ApiController
         event(new UserRegistered($user));
 
 
-        UserRegistered::dispatch($user);
+//        UserRegistered::dispatch($user);
 
         // send verification mail to user
 

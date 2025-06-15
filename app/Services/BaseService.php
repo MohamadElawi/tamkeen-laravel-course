@@ -27,12 +27,12 @@ abstract class BaseService
         return $modelInstance ;
     }
 
-    public function getColorById($id){
+    public function getById($id){
         return  $this->model::findOrFail($id);
     }
 
     public function update($id ,$data){
-        $modelInstance = $this->getColorById($id);
+        $modelInstance = $this->getById($id);
 
         $modelInstance->update($data);
 
@@ -45,7 +45,7 @@ abstract class BaseService
     }
 
     public function delete($id){
-        $modelInstance = $this->getColorById($id);
+        $modelInstance = $this->getById($id);
         $modelInstance->delete();
     }
 }

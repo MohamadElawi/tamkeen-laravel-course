@@ -28,14 +28,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Event::listen(UserRegistered::class ,
-                AssignDefualtPermission::class);
-
-        Event::listen(UserRegistered::class ,
-            SendNotification::class);
-
-        Event::listen(UserRegistered::class ,
-            SendWelcomeMail::class);
+//        Event::listen(UserRegistered::class ,
+//                AssignDefualtPermission::class);
+//
+//        Event::listen(UserRegistered::class ,
+//            SendNotification::class);
+//
+//        Event::listen(UserRegistered::class ,
+//            SendWelcomeMail::class);
 
 
 

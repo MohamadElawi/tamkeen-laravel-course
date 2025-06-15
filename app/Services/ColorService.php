@@ -17,10 +17,6 @@ class ColorService extends BaseService
         $this->model = Color::class ;
     }
 
-    public function create($data){
-
-    }
-
 //    public function getAll(){
 //
 //    }
