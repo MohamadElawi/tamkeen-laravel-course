@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\StatusEnum;
 use App\Models\Product;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -25,7 +26,7 @@ class ProductFactory extends Factory
         $enFaker = fake('en_US');
 
         $arFaker = fake('ar_SA');
-
+        $cases = StatusEnum::cases();
         return [
             'name' => [
                 'en' => $enFaker->words(2, true),
@@ -35,7 +36,10 @@ class ProductFactory extends Factory
                 'en' => $enFaker->sentence(),
                 'ar' => $arFaker->sentence(),
             ],
-            'price' => $enFaker->randomFloat(2, 10, 1000),
+            'price' => $enFaker->randomFloat(2, 100, 100000),
+            'slug' => $enFaker->unique()->slug(),
+            'status' => $cases[array_rand($cases)] ,
+            'quantity' => $enFaker->numberBetween( 10, 1000),
         ];
     }
 }

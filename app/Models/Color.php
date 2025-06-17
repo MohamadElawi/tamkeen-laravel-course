@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\Media\ColorMediaEnum;
 use App\Enums\StatusEnum;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -11,7 +12,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 class Color extends Model implements HasMedia
 {
 
-    use InteractsWithMedia ;
+    use InteractsWithMedia , HasFactory ;
     protected $table = 'colors';
 
     protected $fillable = [

@@ -28,6 +28,6 @@ class ProductService
     }
 
     public function updateProductCategories($product ,$category_ids){
-        $product->categories()->sync($category_ids);
+        $product->categories()->sync($category_ids );
     }
 }

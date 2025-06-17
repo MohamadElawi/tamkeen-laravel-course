@@ -7,14 +7,37 @@ use App\Http\Controllers\API\ApiController;
 use App\Http\Requests\User\Auth\RegisterRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class RegisterController extends ApiController
 {
     public function register(RegisterRequest $request){
-        $user = User::create($request->validated());
 
-        // by helper function
-        event(new UserRegistered($user));
+        DB::beginTransaction();
+
+//        DB::transaction(function() use($request){
+
+        try{
+            $data = $request->validated();
+
+            $data['verification_code'] = rand(111111,999999);
+
+            $user = User::create($data);
+
+
+            // by helper function
+            event(new UserRegistered($user));
+
+            $token = $user->createToken('user_token')->plainTextToken;
+
+            DB::commit();
+
+        }catch(\Exception $e){
+            DB::rollBack();
+        }
+
+//        });
+
 
 
 //        UserRegistered::dispatch($user);
@@ -27,7 +50,7 @@ class RegisterController extends ApiController
 
         // create access token
 
-        $token = $user->createToken('user_token')->plainTextToken;
+
 
         return $this->sendResponce(['access_token' => $token] , 'User Register successfully');
     }

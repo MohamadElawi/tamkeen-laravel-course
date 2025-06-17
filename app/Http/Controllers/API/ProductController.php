@@ -10,6 +10,7 @@ use App\Http\Requests\ProductRequest;
 use App\Models\Product;
 use App\Services\ProductService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 
 class ProductController extends ApiController
@@ -87,42 +88,51 @@ class ProductController extends ApiController
      */
     public function store(ProductRequest $request)
     {
-        $category_ids = $request->category_ids;  // REVIEW  - This ids will i hold from request as array .
+        DB::beginTransaction();
+        try {
+            $category_ids = $request->category_ids;  // REVIEW  - This ids will i hold from request as array .
 
-        $data = $request->validated();
-        $data['name']['ar'] = $request->name_ar;
-        $data['name']['en'] = $request->name_en;
+            $data = $request->validated();
+            $data['name']['ar'] = $request->name_ar;
+            $data['name']['en'] = $request->name_en;
 //
 //        $product = Product::create($data);
-        $product = $this->productService->create($data);
+            $product = $this->productService->create($data);
 
 //         Store the uploaded image to the product instance in the default media collection ('default')
-        $product->addMedia($request->file('image'))
-            ->toMediaCollection('main-image');
+            $product->addMedia($request->file('image'))
+                ->toMediaCollection('main-image');
 
 
-        // Store multiple gallery images to the product instance in the 'gallery' media collection
-        foreach ($request->gallery ?? [] as $image) {
-            $product->addMedia($image)
-                ->toMediaCollection('gallery');
-        }
+            // Store multiple gallery images to the product instance in the 'gallery' media collection
+            foreach ($request->gallery ?? [] as $image) {
+                $product->addMedia($image)
+                    ->toMediaCollection('gallery');
+            }
 
 
-        $product->categories()->attach($category_ids);  // REVIEW - attach: Adding Records to a Many-to-Many Relationship .
+            $product->categories()->attach($category_ids);  // REVIEW - attach: Adding Records to a Many-to-Many Relationship .
 
 //        $product->categories()->detach($category_ids);
 
 
-        $product->colors()->sync($request->color_ids);
+            $product->colors()->sync($request->color_ids);
 
 //        $product->colors()->syncWithoutDetaching($request->color_ids);
-        // Return JSON response
 
+            DB::commit();
+
+            // Return JSON response
         return $this->sendResponce(
             new ProductResource($product),
             __('Product_created_successfully'),
             201
         );
+
+        }catch (\Exception $e){
+            DB::rollBack();
+            $this->sendError('something went wrongs');
+        }
     }
 
     /**
@@ -158,53 +168,19 @@ class ProductController extends ApiController
      */
     public function update(ProductRequest $request, string $id)
     {
+        DB::beginTransaction();
         $product = $this->productService->update($id, $request->validated());
 
         $this->productService->updateProductCategories($product, $request->category_ids);
+
+        DB::commit();
 
         return $this->sendResponce(
             new ProductResource($product),
             __('Product_updated_successfully')
         );
 
-//        $product = Product::find($id);
-//        if ($product) {
-//            if ($request->has('name_ar')) {
-//                $product->setTranslation('name', 'ar', $request->name_ar);
-//            }
-//            if ($request->has('name_en')) {
-//                $product->setTranslation('name', 'en', $request->name_en);
-//            }
-//            $validator = \Validator::make(
-//                $request->all(),
-//                [
-//                    'name_ar' => 'required|string|max:255|',
-//                    'name_en' => 'required|string|max:255|',
-//                    'price' => 'numeric|between:10,10000000',
-//                    'description' => 'lowercase',
-//                ],
-//                [
-//                    'name_ar.required' => __('you_must_enter_the_name_of_product'),
-//                    'name_en.required' => __('you_must_enter_the_name_of_product'),
-//                    'price.*' => __('the price_should_be_number_betwwen_10->1000'),
-//                    'description.lowercase' => __('please_enter_the_description_with_lowercase_letters'),
-//                ]
-//            );
-//
-//            if ($validator->fails()) {
-//                return $this->sendError($validator->messages()->first());
-//            }
 
-//            $category_ids = $request->category_ids;
-
-        // TODO -  $product->categories()->detach($category_ids); //REVIEW - detach: Removing Records from a Many-to-Many Relationship
-
-//            $product->categories()->sync($category_ids);
-
-
-//        } else {
-//            return $this->sendError(__('The_Product_cant_updated_or_not_Found'));
-//        }
     }
 
     /**

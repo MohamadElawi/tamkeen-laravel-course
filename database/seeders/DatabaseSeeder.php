@@ -15,17 +15,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-//        User::factory(1)->create();
-//
-//        Category::factory(10)->create();
-
-
-//        Product::factory(20)->create()->each(function ($product) {
-//            $product->categories()->attach(Category::inRandomOrder()->first());
-//        });
-
-//        $this->call(CategorySeeder::class);
-        $this->call(AdminSeeder::class);
-
+//        $this->call(RoleSeeder::class);
+//        $this->call(PermissionSeeder::class);
+//        $this->call(AdminSeeder::class);
+        $this->call(CategorySeeder::class);
+        $this->call(ColorSeeder::class);
+        $this->call(ProductColorSeeder::class);
+        $this->call(UserSeeder::class);
     }
 }

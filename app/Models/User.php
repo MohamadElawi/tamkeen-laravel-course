@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Enums\Media\UserMediaEnum;
+use App\Enums\UserStatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -26,6 +27,9 @@ class User extends Authenticatable implements  HasMedia
         'name',
         'email',
         'password',
+        'verification_code' ,
+        'status' ,
+        'email_verified_at'
     ];
 
     protected $guard_name = 'user';
@@ -50,6 +54,7 @@ class User extends Authenticatable implements  HasMedia
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'status' => UserStatusEnum::class
         ];
     }
 

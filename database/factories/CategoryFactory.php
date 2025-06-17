@@ -31,27 +31,14 @@ class CategoryFactory extends Factory
         $arFaker = fake('ar_SA');
         $cases = StatusEnum::cases();
 
-
-//        $data = [
-//            'name' => [
-//                'en' => $enFaker->word(),
-//                'ar' => $arFaker->word(),
-//            ] ,
-//            'status' => StatusEnum::ACTIVE
-//        ];
-//
-//        dd($data);
-
-//        dd($cases[rand(0 ,1)]);
         return [
             'name' => [
-                'en' => $enFaker->word(),
-                'ar' => $arFaker->word(),
+                'en' => $enFaker->words(2 ,true),
+                'ar' => $arFaker->words(2 ,true),
             ],
-//            'status' => StatusEnum::ACTIVE->value ,
-            'status' => $cases[rand(0 ,1)],
-            'slug' => $enFaker->slug() ,
 
+            'status' => $cases[array_rand($cases)],
+            'slug' => $enFaker->unique()->slug() ,
         ];
     }
 
