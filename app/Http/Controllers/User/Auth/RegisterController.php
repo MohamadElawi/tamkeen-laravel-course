@@ -20,13 +20,13 @@ class RegisterController extends ApiController
         try{
             $data = $request->validated();
 
-            $data['verification_code'] = rand(111111,999999);
+
 
             $user = User::create($data);
 
 
             // by helper function
-            event(new UserRegistered($user));
+//            event(new UserRegistered($user));
 
             $token = $user->createToken('user_token')->plainTextToken;
 

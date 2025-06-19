@@ -64,4 +64,17 @@ class User extends Authenticatable implements  HasMedia
             ->singleFile()
             ->useDisk(UserMediaEnum::disk());
     }
+
+
+    protected static function booted()
+    {
+        self::creating(function($user){
+            $user->verification_code = rand(111111,999999) ;
+        });
+
+        self::created(function($user){
+            // send a verification mail
+        });
+    }
+
 }

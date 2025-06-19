@@ -4,8 +4,10 @@ namespace App\Models;
 
 use App\Enums\Media\ProductMediaEnum;
 use App\Enums\StatusEnum;
+use App\Models\Scopes\ActiveScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia;
@@ -70,6 +72,43 @@ class Product extends Model implements HasMedia
 
         $this->addMediaCollection(ProductMediaEnum::GALLERY->value)
             ->useDisk(ProductMediaEnum::GALLERY->disk());
+    }
+
+
+
+    ################### local scopes ################
+
+    public function scopeActive($query){
+        return $query->where('status',StatusEnum::ACTIVE);
+    }
+
+    public function scopePriceFilter($query ,$from , $to){
+        $query->whereBetween('price',[$from, $to]);
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        self::addGlobalScope(ActiveScope::class);
+    }
+
+    protected static function booted(){
+        self::created(function($product){
+
+        });
+
+        self::updated(function($product){
+            //
+        });
+
+        self::deleted(function($product){
+            //
+        });
+
+        self::creating(function($product){
+            $product->slug = Str::slug($product->name);
+        });
     }
 
 }
