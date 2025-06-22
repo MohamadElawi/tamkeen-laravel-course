@@ -26,6 +26,7 @@ class SendWelcomeMail
 //        $username = $event->user->name ;
 //        echo "Hello $username,Welcome <br>";
 
+        // send an email to the new user
         Mail::to($event->user->email)->send(new WelcomeMail($event->user));
     }
 }

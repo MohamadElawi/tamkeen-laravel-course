@@ -39,8 +39,10 @@ class AdminController extends ApiController implements HasMiddleware
     public function store(AdminRequest $request){
         $data = $request->validated();
 
+        // create a new admin
         $admin = Admin::create($data);
 
+        // assign the admin role to the new admin
         $admin->assignRole(RoleEnum::ADMIN);
 
         return $this->sendResponce(AdminResource::make($admin) ,'Admin created successfully');

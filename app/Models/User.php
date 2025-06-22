@@ -13,10 +13,10 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable implements  HasMedia
+class User extends Authenticatable implements HasMedia
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable ,HasApiTokens ,InteractsWithMedia ,HasRoles;
+    use HasFactory, Notifiable, HasApiTokens, InteractsWithMedia, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -27,8 +27,8 @@ class User extends Authenticatable implements  HasMedia
         'name',
         'email',
         'password',
-        'verification_code' ,
-        'status' ,
+        'verification_code',
+        'status',
         'email_verified_at'
     ];
 
@@ -68,11 +68,11 @@ class User extends Authenticatable implements  HasMedia
 
     protected static function booted()
     {
-        self::creating(function($user){
-            $user->verification_code = rand(111111,999999) ;
+        self::creating(function ($user) {
+            $user->verification_code = rand(111111, 999999);
         });
 
-        self::created(function($user){
+        self::created(function ($user) {
             // send a verification mail
         });
     }

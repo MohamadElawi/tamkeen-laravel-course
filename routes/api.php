@@ -29,7 +29,7 @@ Route::resource('products', ProductController::class)->missing(function (Request
 
 Route::resource('categories', CategoryController::class);
 
-Route::resource('cart_items', Cart_ItemsController::class);
+
 Route::resource('orders', OrderController::class);
 
 Route::get('retrieve_active_records', [ProductController::class, 'retrieve_active_records']);

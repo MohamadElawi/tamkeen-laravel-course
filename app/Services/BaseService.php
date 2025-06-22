@@ -44,6 +44,7 @@ abstract class BaseService
         return $modelInstance ;
     }
 
+
     public function delete($id){
         $modelInstance = $this->getById($id);
         $modelInstance->delete();

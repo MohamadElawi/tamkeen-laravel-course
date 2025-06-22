@@ -20,47 +20,37 @@ class Product extends Model implements HasMedia
     use InteractsWithMedia;
     use HasFactory;
     use SoftDeletes;
+
     public $translatable = ['name', 'description'];
 
     protected $fillable = [
         'name',
         'price',
         'description',
-        'slug' ,
-        'status' ,
+        'slug',
+        'status',
         'quantity'
     ];
 
-    protected  $casts = [
+    protected $casts = [
         'status' => StatusEnum::class
     ];
 
+    ############### Relations #####################
 
     public function categories()
     {
         return $this->belongsToMany(Category::class, 'category_products');
     }
+
+    public function colors()
+    {
+        return $this->belongsToMany(Color::class, 'product_colors');
+    }
+
     public function orders()
     {
         return $this->belongsToMany(Order::class, 'order_products');
-    }
-//    public function getPriceAttribute($price)
-//    {
-//        return '$' . number_format($price, 2);
-//    }
-    public function getNameAttribute($name)
-    {
-        return ucfirst($name);
-    }
-    public function setNameAttribute($name)
-    {
-
-        $this->attributes['name'] = ucfirst($name);
-    }
-
-
-    public function colors(){
-        return $this->belongsToMany(Color::class ,'product_colors');
     }
 
 
@@ -75,38 +65,59 @@ class Product extends Model implements HasMedia
     }
 
 
-
     ################### local scopes ################
 
-    public function scopeActive($query){
-        return $query->where('status',StatusEnum::ACTIVE);
+    public function scopeActive($query)
+    {
+        return $query->where('status', StatusEnum::ACTIVE);
     }
 
-    public function scopePriceFilter($query ,$from , $to){
-        $query->whereBetween('price',[$from, $to]);
+    public function scopePriceFilter($query, $from, $to)
+    {
+        $query->whereBetween('price', [$from, $to]);
     }
+
+
+    ################### methods ###################
+
+    //    public function getPriceAttribute($price)
+//    {
+//        return '$' . number_format($price, 2);
+//    }
+    public function getNameAttribute($name)
+    {
+        return ucfirst($name);
+    }
+
+    public function setNameAttribute($name)
+    {
+
+        $this->attributes['name'] = ucfirst($name);
+    }
+
 
     protected static function boot()
     {
         parent::boot();
 
-        self::addGlobalScope(ActiveScope::class);
+//        self::addGlobalScope(ActiveScope::class);
     }
 
-    protected static function booted(){
-        self::created(function($product){
+    protected static function booted()
+    {
+        self::created(function ($product) {
 
         });
 
-        self::updated(function($product){
+        self::updated(function ($product) {
             //
         });
 
-        self::deleted(function($product){
+        self::deleted(function ($product) {
             //
         });
 
-        self::creating(function($product){
+        self::creating(function ($product) {
             $product->slug = Str::slug($product->name);
         });
     }

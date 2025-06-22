@@ -12,12 +12,9 @@ class ProductService
 
 
     public function getProductById($id , $withTrashed = false){
-       return Product::when($withTrashed ,fn($q) => $q->withTrashed())
-            ->findOrFail($id);
-
-//        Product::when($withTrashed ,function($q){
-//            return $q->withTrashed();
-//        })->findOrFail($id);
+        return Product::when($withTrashed ,function($q){
+            return $q->withTrashed();
+        })->findOrFail($id);
     }
 
     public function update($id , array $data){

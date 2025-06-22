@@ -23,7 +23,7 @@ class ProductResource extends JsonResource
             'quantity' => $this->quantity ,
             'status_value' => $this->status->value ,
             'status' => $this->status->translate() ,
-            'categories' => CategoryResource::collection($this->categories) ,
+            'categories' => $this->whenLoaded('categories',CategoryResource::collection($this->categories)) ,
             'colors' => $this->colors ,
             'image' => $this->getFirstMediaUrl(ProductMediaEnum::MAIN_IMAGE->value)
         ];
