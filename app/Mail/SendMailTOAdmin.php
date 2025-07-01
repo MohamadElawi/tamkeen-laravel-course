@@ -40,7 +40,8 @@ class SendMailTOAdmin extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.new-user-notification',
+            view: 'emails.new-user-notification'
+//            with: ['key' => 'value']
         );
     }
 

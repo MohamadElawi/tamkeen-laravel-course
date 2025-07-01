@@ -67,16 +67,47 @@ class Product extends Model implements HasMedia
 
     ################### local scopes ################
 
-    public function scopeActive($query)
+    public function scopeActive($query )
     {
         return $query->where('status', StatusEnum::ACTIVE);
     }
 
     public function scopePriceFilter($query, $from, $to)
     {
+
+        if(!$from && !$to)
+            return $query ;
+
+
         $query->whereBetween('price', [$from, $to]);
     }
 
+    public function scopeSearch($query ,$search){
+        if(!$search)
+            return $query ;
+
+       return $query->where(function($q) use($search){
+                $q->where('name->en','like',"%$search%")
+                    ->orWhere('name->ar','like',"%$search%")
+                    ->orWhereHas('categories',function($q)use($search){
+                        $q->where('name->en','like',"%$search%")
+                            ->orWhere('name->ar','like',"%$search%")
+                            ->where('status',StatusEnum::ACTIVE);
+                        // todo
+                    });
+            });
+    }
+
+
+    public function scopeColorFilter($builder ,$colorId){
+        if(!$colorId)
+            return $builder ;
+
+        return    $builder->whereHas('colors',function($q)use($colorId){
+            $q->where('colors.id',$colorId)
+                ->where('status',StatusEnum::ACTIVE);
+        });
+    }
 
     ################### methods ###################
 
@@ -105,6 +136,7 @@ class Product extends Model implements HasMedia
 
     protected static function booted()
     {
+
         self::created(function ($product) {
 
         });

@@ -24,10 +24,10 @@ class CartItemsController extends ApiController
         $userId = auth('user')->id();
 
         $cart_items = CartItem::whereUserId($userId)
-            ->with('product','color')->paginate();
+            ->with('product', 'color')->paginate();
 
         return $this->sendResponce(CartItemResource::collection($cart_items), 'cart_items retrieved successfully'
-            ,200 ,true);
+            , 200, true);
     }
 
     /**
@@ -36,8 +36,8 @@ class CartItemsController extends ApiController
     public function store(AddProductReqeust $request)
     {
 
-        $product = Product::active()->whereHas('colors', function($q) use($request){
-            $q->where('colors.id',$request->color_id);
+        $product = Product::active()->whereHas('colors', function ($q) use ($request) {
+            $q->where('colors.id', $request->color_id);
         })->findOrFail($request->product_id);
 
         $data = $request->validated();
@@ -52,7 +52,6 @@ class CartItemsController extends ApiController
     }
 
 
-
     /**
      * Update the specified resource in storage.
      */
@@ -61,12 +60,12 @@ class CartItemsController extends ApiController
         $data = $request->validated();
         $data['user_id'] = auth('user')->id();
 
-        $cartItem = CartItem::where('user_id',$data['user_id'])->findOrFail($id);
+        $cartItem = CartItem::where('user_id', $data['user_id'])->findOrFail($id);
 
 
         $cartItem->update([
-                'quantity' => $request->input('quantity'),
-            ]);
+            'quantity' => $request->input('quantity'),
+        ]);
         return $this->sendResponce($cartItem, 'cart_items updated successfully');
 
     }
@@ -74,16 +73,12 @@ class CartItemsController extends ApiController
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        $cart_item = Cart_Item::find($id);
-        if ($cart_item) {
-            $cart_item->delete();
+        $authUserId = auth('user')->id();
+        $cart_item = CartItem::where('user_id',$authUserId)->findOrFail($id);
+        $cart_item->delete();
 
-            return $this->sendResponce($cart_item, 'The cart_item Is Deleted Successfully');
-        } else {
-
-            return $this->sendError(null, 'This cart_item Not found');
-        }
+        return $this->sendResponce(null, 'The cart_item Is Deleted Successfully');
     }
 }

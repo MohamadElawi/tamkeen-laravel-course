@@ -20,14 +20,16 @@ class AdminController extends ApiController implements HasMiddleware
     {
         return [
             new Middleware('permission:'.PermissionEnum::CREATE_ADMINS->value ,only: ['store']),
-            new Middleware('permission:'.PermissionEnum::VIEW_ADMINS->value ,only: ['index','show']),
+//            new Middleware('permission:'.PermissionEnum::VIEW_ADMINS->value ,only: ['index','show']),
         ];
     }
 
 
     public function index(Request $request){
         $currentAdminId = auth('admin')->id();
-        $admins = Admin::where('id','!=',$currentAdminId)->paginate($request->count); // by default 15;
+        $admins = Admin::where('id','!=',$currentAdminId)
+            ->with('roles','permissions')
+            ->paginate($request->count); // by default 15;
 
         return $this->sendResponce(AdminResource::collection($admins),
                 'Admins retrieved successfully',

@@ -1,17 +1,12 @@
 <?php
 
-namespace App\Http\Requests\User\Cart;
+namespace App\Http\Requests\User\Order;
 
 use App\Http\Requests\APIRequest;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateCartItemRequest extends APIRequest
+class OrderRequest extends APIRequest
 {
-
-//    public function authorize(): bool
-//    {
-//        return auth('user_id') ==
-//    }
 
 
     /**
@@ -22,7 +17,7 @@ class UpdateCartItemRequest extends APIRequest
     public function rules(): array
     {
         return [
-            'quantity' => ['required','min:1','numeric']
+            //
         ];
     }
 }

@@ -5,6 +5,7 @@ use App\Http\Controllers\API\CartItemsController;
 use App\Http\Controllers\User\Auth\LoginController;
 use App\Http\Controllers\User\Auth\RegisterController;
 use App\Http\Controllers\User\Category\CategoryController;
+use App\Http\Controllers\User\Order\OrderController;
 use App\Http\Controllers\User\Product\ProductController;
 use App\Http\Controllers\User\Profile\ProfileController;
 use Illuminate\Http\Request;
@@ -32,6 +33,8 @@ Route::middleware('auth:user')->group(function(){
 
 
     Route::resource('cart-items', CartItemsController::class);
+
+    Route::apiResource('orders',OrderController::class)->except('destroy','update');
 });
 
 

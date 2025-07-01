@@ -29,6 +29,8 @@ class LoginController extends ApiController
         $admin = auth('admin')->user();
 
         $admin->currentAccessToken()->delete();
+
+//        $admin->tokens()->delete();
         return $this->sendResponce(null , 'Admin Logged out successfully');
     }
 }

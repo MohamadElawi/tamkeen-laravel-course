@@ -26,7 +26,7 @@ class RegisterController extends ApiController
 
 
             // by helper function
-//            event(new UserRegistered($user));
+            event(new UserRegistered($user));
 
             $token = $user->createToken('user_token')->plainTextToken;
 

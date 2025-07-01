@@ -12,8 +12,8 @@ class ActiveScope implements Scope
     /**
      * Apply the scope to a given Eloquent query builder.
      */
-    public function apply(Builder $builder, Model $model): void
+    public function apply(Builder $query, Model $model): void
     {
-        $builder->whereStatus(StatusEnum::ACTIVE);
+        $query->whereStatus(StatusEnum::ACTIVE);
     }
 }
