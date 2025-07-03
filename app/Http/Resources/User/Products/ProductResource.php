@@ -24,7 +24,7 @@ class ProductResource extends JsonResource
             'status_value' => $this->status->value ,
             'status' => $this->status->translate() ,
             'categories' => $this->whenLoaded('categories',CategoryResource::collection($this->categories)) ,
-            'colors' => $this->colors ,
+            'colors' => $this->whenLoaded('colors',$this->colors ),
             'image' => $this->getFirstMediaUrl(ProductMediaEnum::MAIN_IMAGE->value)
         ];
     }

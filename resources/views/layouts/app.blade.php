@@ -47,7 +47,11 @@
     </head>
     <body class="font-sans antialiased h-full bg-gray-50 dark:bg-gray-900">
         <div class="min-h-screen flex flex-col">
-            @include('layouts.navigation')
+            @if(request()->routeIs('admin.*'))
+                @include('layouts.navigation')
+            @else
+                @include('layouts.user-navigation')
+            @endif
 
             <!-- Page Heading -->
             @if (isset($header))

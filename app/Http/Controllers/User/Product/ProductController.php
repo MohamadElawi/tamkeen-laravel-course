@@ -76,6 +76,12 @@ class ProductController extends ApiController
     }
 
     public function show($id){
-       return  $product = Product::active()->findOrFail($id);
+         $product = Product::active()
+             ->with(['colors' => function($q){
+                 $q->whereStatus(StatusEnum::ACTIVE);
+             }])
+             ->findOrFail($id);
+         return $this->sendResponce(ProductResource::make($product),
+             'Product retrieved successfully');
     }
 }

@@ -37,6 +37,14 @@ class Order extends Model
         self::creating(function($order){
             $order->order_number = "Tamkeen_course" . rand(1111, 9999);
         });
+
+        self::created(function($order){
+
+        });
+
+        self::deleted(function(){
+
+        });
     }
 
 }

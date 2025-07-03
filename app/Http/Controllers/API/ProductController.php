@@ -173,6 +173,25 @@ class ProductController extends ApiController
 
         $this->productService->updateProductCategories($product, $request->category_ids);
 
+        //Store the uploaded image to the product instance in the default media collection ('default')
+
+        if($request->hasFile('image')){
+            $product->clearMediaCollection('image');
+            $product->addMedia($request->file('image'))
+                ->toMediaCollection('main-image');
+        }
+
+
+        if($request->has('gallery')){
+            // Store multiple gallery images to the product instance in the 'gallery' media collection
+            foreach ($request->gallery ?? [] as $image) {
+                $product->clearMediaCollection('gallery');
+                $product->addMedia($image)
+                    ->toMediaCollection('gallery');
+            }
+        }
+
+
         DB::commit();
 
         return $this->sendResponce(

@@ -26,8 +26,9 @@ class LoginRequest extends FormRequest
      */
     public function rules(): array
     {
+        $tableName = $this->is('admin/*') ? 'admins' : 'users';
         return [
-            'email' => ['required', 'string', 'email', 'exists:admins,email'],
+            'email' => ['required', 'string', 'email', "exists:{$tableName},email"],
             'password' => ['required', 'string'],
         ];
     }
@@ -41,13 +42,15 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        if (!Auth::guard('admin-web')->attempt($this->only('email', 'password'), $this->boolean('remember'))) {
+        $authGuard =  $this->is('admin/*') ? 'admin-web' : 'web';
+        if (!Auth::guard($authGuard)->attempt($this->only('email', 'password'), $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
                 'email' => trans('auth.failed'),
             ]);
         }
+     
 
         RateLimiter::clear($this->throttleKey());
     }
