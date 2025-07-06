@@ -18,6 +18,10 @@
                     <x-nav-link :href="route('user.products.index')" :active="request()->routeIs('user.products.*')">
                         {{ __('Products') }}
                     </x-nav-link>
+
+                    <x-nav-link :href="route('user.orders.index')" :active="request()->routeIs('user.orders.*')">
+                        {{ __('orders') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -105,4 +109,4 @@
             </div>
         </div>
     </div>
-</nav> 
+</nav>

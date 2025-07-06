@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User\Web;
 
+use App\Http\Controllers\Controller;
 use App\Enums\StatusEnum;
 use App\Models\Product;
 use App\Models\Category;

@@ -2,10 +2,12 @@
 
 
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\UserProductController;
+use App\Http\Controllers\User\Web\UserProductController;
+use App\Http\Controllers\User\Web\UserOrderController;
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\User\web\CartItemsController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -27,6 +29,15 @@ Route::middleware(['auth'])->group(function () {
     // User Product Routes
     Route::get('/products', [UserProductController::class, 'index'])->name('user.products.index');
     Route::get('/products/{id}', [UserProductController::class, 'show'])->name('user.products.show');
+
+    // User Order Routes
+    Route::get('/orders', [UserOrderController::class, 'index'])->name('user.orders.index');
+    Route::get('/checkout', [UserOrderController::class, 'create'])->name('user.orders.create');
+    Route::post('/orders', [UserOrderController::class, 'store'])->name('user.orders.store');
+    Route::get('/orders/{id}', [UserOrderController::class, 'show'])->name('user.orders.show');
+
+    // User Cart Routes
+    Route::post('/cart-items', [CartItemsController::class, 'store'])->name('user.cart-items.store');
 });
 
 // Admin Routes
