@@ -3,10 +3,12 @@
 namespace App\Models;
 
 use App\Enums\OrderStatusEnum;
+use App\Mail\SendInvoiceMail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Mail;
 use Spatie\Translatable\HasTranslations;
 
 class Order extends Model
@@ -42,9 +44,24 @@ class Order extends Model
 
         });
 
+        self::updating(function ($order){
+//            if($order->getOriginal('status') == OrderStatusEnum::PENDING &&
+//                $order->status == OrderStatusEnum::ACCEPTED){
+//                $userEmail = $order->user->email;
+//                Mail::to($userEmail)->send(new SendInvoiceMail($order));
+//            }
+
+        });
+
+        self::updated(function($order){
+//
+        });
+
         self::deleted(function(){
 
         });
+
+
     }
 
 }

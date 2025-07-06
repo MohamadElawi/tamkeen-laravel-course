@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin\Order;
 
+use App\Enums\OrderStatusEnum;
+use App\Events\OrderCompleted;
 use App\Http\Controllers\API\ApiController;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\User\Order\OrderResource;
@@ -31,8 +33,32 @@ class OrderController extends ApiController
             'Orders retrieved successfully');
     }
 
-    public function accept(){
+    public function accept($id){
+        $order = $this->orderService->getById($id);
 
+        if($order->status != OrderStatusEnum::PENDING)
+            $this->sendError('the Order status should be pending');
+
+        $order->update([
+            'status' => OrderStatusEnum::ACCEPTED
+        ]);
+
+//        event(new OrderCompleted($order));
+        return $this->sendResponce(OrderResource::make($order) ,'Order accepted successfully');
+    }
+
+    public function rejedct($id){
+        $order = $this->orderService->getById($id);
+
+        if($order->status != OrderStatusEnum::PENDING)
+            $this->sendError('the Order status should be pending');
+
+        $order->update([
+            'status' => OrderStatusEnum::REJECTED
+        ]);
+
+
+        return $this->sendResponce(OrderResource::make($order) ,'Order accepted successfully');
     }
 
 }

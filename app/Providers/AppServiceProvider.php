@@ -7,6 +7,8 @@ use App\Events\UserRegistered;
 use App\Listeners\AssignDefualtPermission;
 use App\Listeners\SendNotification;
 use App\Listeners\SendWelcomeMail;
+use App\Models\Order;
+use App\Observers\OrderObserver;
 use Illuminate\Auth\Middleware\Authenticate;
 use Illuminate\Auth\Middleware\RedirectIfAuthenticated;
 use Illuminate\Http\Request;
@@ -38,6 +40,7 @@ class AppServiceProvider extends ServiceProvider
 //            SendWelcomeMail::class);
 
 
+        Order::observe(OrderObserver::class);
 
        Authenticate::redirectUsing(function(Request $request){
         if($request->is('admin/*')){

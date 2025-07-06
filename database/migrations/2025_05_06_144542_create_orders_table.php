@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->decimal('total',10,2);
             $table->decimal('tax',10,2);
-            $table->enum('status',['Pending','On the Way','Delivered','Canceled']);
+            $table->enum('status',['pending','accepted','rejected']);
             $table->softDeletes();
             $table->timestamps();
         });

@@ -114,6 +114,5 @@ class OrderController extends ApiController
             return $this->sendError($exception->getMessage());
         }
 
-
     }
 }

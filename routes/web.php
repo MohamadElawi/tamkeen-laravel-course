@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\User\Web\UserProductController;
 use App\Http\Controllers\User\Web\UserOrderController;
 
+use App\Models\Order;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\User\web\CartItemsController;
@@ -12,6 +13,8 @@ use App\Http\Controllers\User\web\CartItemsController;
 Route::get('/', function () {
     return view('welcome');
 });
+
+
 
 
 Route::resource('products', ProductController::class);

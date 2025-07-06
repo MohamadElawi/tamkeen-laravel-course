@@ -22,5 +22,8 @@ Route::middleware(['auth:admin','role:admin|super-admin'])->group(function () {
     Route::post('permissions/{admin_id}',[PermissionController::class ,'store']);
 
     Route::apiResource('orders',OrderController::class)->only('index','show');
+
+    Route::get('orders/accept/{id}',[OrderController::class ,'accept']);
+    Route::get('orders/reject/{id}',[OrderController::class ,'reject']);
 });
 
