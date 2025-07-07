@@ -1,6 +1,6 @@
 <?php
 
-
+use App\Http\Controllers\Admin\AdminManagementController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\User\Web\UserProductController;
 use App\Http\Controllers\User\Web\UserOrderController;
@@ -62,6 +62,20 @@ Route::middleware(['auth:admin-web'])->prefix('admin')->group(function () {
     Route::put('/products/{product}', [ProductController::class, 'update'])->name('admin.products.update');
     Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('admin.products.destroy');
 
+
+ Route::middleware(['auth'])->prefix('manage')->name('manage.')->group(function () {
+        Route::get('/admins', [AdminManagementController::class, 'index'])->name('admins');
+        Route::get('/admins/create', [AdminManagementController::class, 'create'])->name('admins.create');
+        Route::post('/admins', [AdminManagementController::class, 'store'])->name('admins.store');
+        Route::get('/admins/{admin}', [AdminManagementController::class, 'show'])->name('admins.show');
+        Route::get('/admins/{admin}/edit', [AdminManagementController::class, 'edit'])->name('admins.edit');
+        Route::put('/admins/{admin}', [AdminManagementController::class, 'update'])->name('admins.update');
+        Route::delete('/admins/{admin}', [AdminManagementController::class, 'destroy'])->name('admins.destroy');
+        Route::post('/admins/{admin}/toggle-status', [AdminManagementController::class, 'toggleStatus'])
+            ->name('admins.toggle-status');
+    });
+
+
     // Admin Category Management (placeholder routes)
     Route::get('/categories', function () {
         return view('admin.categories.index');
@@ -73,7 +87,7 @@ Route::middleware(['auth:admin-web'])->prefix('admin')->group(function () {
     })->name('admin.colors.index');
 
     // Admin Order Management (placeholder routes)
-    Route::get('/orders', function () {
+    Route::get('/web/orders', function () {
         return view('admin.orders.index');
     })->name('admin.orders.index');
 

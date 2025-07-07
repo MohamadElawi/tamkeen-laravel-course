@@ -7,6 +7,19 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+
+            <div class="flex justify-end">
+                @if(session('error'))
+                    <div class="alert alert-danger text-red-600">
+                        {{ session('error') }}
+                    </div> 
+                @endif
+                @if(session('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif
+            </div>
             <!-- Search and Filters Section -->
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mb-6">
                 <div class="p-6">
@@ -63,7 +76,7 @@
                         </div>
 
                         <div class="flex justify-between items-center">
-                            <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-gray-800 font-bold py-2 px-4 rounded">
+                            <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">
                                 Apply Filters
                             </button>
                             <a href="{{ route('user.products.index') }}" class="text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200">
@@ -80,7 +93,7 @@
                     @include('components.flash-messages')
                     <div class="flex justify-end mb-6">
                         <a href="{{ route('user.orders.create') }}"
-                           class="inline-flex items-center px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-gray-500 font-bold rounded-lg shadow transition-all duration-200">
+                           class="inline-flex items-center px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg shadow transition-all duration-200">
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h18M9 3v18m6-18v18" />
                             </svg>
@@ -154,7 +167,7 @@
                                                 ${{ number_format($product->price, 2) }}
                                             </span>
                                             <a href="{{ route('user.products.show', $product->id) }}"
-                                               class="bg-indigo-600 hover:bg-indigo-700 text-gray-500 text-sm font-medium py-2 px-4 rounded">
+                                               class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium py-2 px-4 rounded">
                                                 View Details
                                             </a>
                                         </div>
@@ -176,7 +189,7 @@
                                                     </select>
                                                 @endif
                                                 <button type="submit"
-                                                        class="w-full bg-emerald-600 hover:bg-emerald-700 text-gray-500 font-bold py-2 px-4 rounded mt-1 transition-colors duration-200">
+                                                        class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded mt-1 transition-colors duration-200">
                                                     Add to Cart
                                                 </button>
                                             </form>

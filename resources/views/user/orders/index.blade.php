@@ -60,13 +60,13 @@
                                                 <div class="mb-4">
                                                     @switch($order->status->value)
                                                         @case('pending')
-                                                        <span class="inline-flex items-center justify-center px-4 py-2 min-w-[120px] rounded-full text-sm font-bold bg-amber-500 text-gray-500 shadow border-2 border-amber-400 hover hover:bg-black">
+                                                        <span class="inline-flex items-center justify-center px-4 py-2 min-w-[120px] rounded-full text-sm font-bold bg-amber-500 text-white shadow border-2 border-amber-400 hover hover:bg-black">
                                                                 <div class="w-2 h-2 hover:bg-black rounded-full mr-2 animate-pulse"></div>
                                                                 Pending Review
                                                             </span>
                                                         @break
                                                         @case('accepted')
-                                                        <span class="inline-flex items-center justify-center px-4 py-2 min-w-[120px] rounded-full text-sm font-bold bg-green-600 text-gray-500 shadow border-2 border-green-500 hover:bg-black">
+                                                        <span class="inline-flex items-center justify-center px-4 py-2 min-w-[120px] rounded-full text-sm font-bold bg-green-600 text-white shadow border-2 border-green-500 hover:bg-black">
                                                                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                                                                 </svg>
@@ -74,7 +74,7 @@
                                                             </span>
                                                         @break
                                                         @case('rejected')
-                                                        <span class="inline-flex items-center justify-center px-4 py-2 min-w-[120px] rounded-full text-sm font-bold bg-red-600 text-gray-500 shadow border-2 border-red-500 hover:bg-black-500">
+                                                        <span class="inline-flex items-center justify-center px-4 py-2 min-w-[120px] rounded-full text-sm font-bold bg-red-600 text-white shadow border-2 border-red-500 hover:bg-black-500">
                                                                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                                                                 </svg>
@@ -82,7 +82,7 @@
                                                             </span>
                                                         @break
                                                         @default
-                                                        <span class="inline-flex items-center justify-center px-4 py-2 min-w-[120px] rounded-full text-sm font-bold bg-gray-600 text-white shadow border-2 border-gray-500">
+                                                        <span class="inline-flex items-center justify-center px-4 py-2 min-w-[120px] rounded-full text-sm font-bold bg-gray-600 text-white shadow border-2 border-gray-500 hover
                                                                 {{ ucfirst($order->status->value) }}
                                                             </span>
                                                     @endswitch

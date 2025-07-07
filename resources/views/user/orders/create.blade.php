@@ -109,8 +109,8 @@
                             <!-- Place Order Button -->
                             <form method="POST" action="{{ route('user.orders.store') }}" class="mt-6">
                                 @csrf
-                                <button type="submit"
-                                        class="w-full bg-green-600 hover:bg-gray-700 text-gray-500 font-bold py-3 px-4 rounded text-center block">
+                                <button type="submit"       
+                                        class="w-full bg-green-600 hover:bg-gray-700 text-white font-bold py-3 px-4 rounded text-center block">
                                     Place Order
                                 </button>
                             </form>
@@ -118,7 +118,7 @@
                             <!-- Action Buttons -->
                             <div class="mt-4 space-y-3">
                                 <a href="{{ route('user.products.index') }}"
-                                   class="w-full bg-gray-600 hover:bg-gray-700 text-gray-500 font-bold py-2 px-4 rounded text-center block">
+                                   class="w-full bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded text-center block">
                                     Continue Shopping
                                 </a>
                             </div>

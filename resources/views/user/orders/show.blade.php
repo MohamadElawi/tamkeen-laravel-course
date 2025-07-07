@@ -10,6 +10,30 @@
             <!-- Order Header -->
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mb-6">
                 <div class="p-6">
+                    @if(session('error') || session('success'))
+                        <div class="mb-4">
+                            @if(session('error'))
+                                <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded relative dark:bg-red-900/30 dark:border-red-800 dark:text-red-400" role="alert">
+                                    <div class="flex items-center">
+                                        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                                        </svg>
+                                        <span class="font-medium">{{ session('error') }}</span>
+                                    </div>
+                                </div>
+                            @endif
+                            @if(session('success'))
+                                <div class="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded relative dark:bg-green-900/30 dark:border-green-800 dark:text-green-400" role="alert">
+                                    <div class="flex items-center">
+                                        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                                        </svg>
+                                        <span class="font-medium">{{ session('success') }}</span>
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+                    @endif
                     <div class="flex justify-between items-start">
                         <div>
                             <h3 class="text-2xl font-bold text-gray-900 dark:text-white">
@@ -82,9 +106,9 @@
                                                     <span class="text-sm text-gray-600 dark:text-gray-400">Color:</span>
                                                     <div class="w-4 h-4 rounded-full border border-gray-300"
                                                          style="background-color: {{ $orderProduct->color->hex_code ?? '#gray' }}"
-                                                         title="{{ $orderProduct->color->name }}"></div>
+                                                         title="{{ $orderProduct->color->title }}"></div>
                                                     <span class="text-sm text-gray-600 dark:text-gray-400">
-                                                        {{ $orderProduct->color->name }}
+                                                        {{ $orderProduct->color->title }}
                                                     </span>
                                                 </div>
                                             @endif
@@ -140,11 +164,11 @@
                             <!-- Action Buttons -->
                             <div class="mt-6 space-y-3">
                                 <a href="{{ route('user.orders.index') }}"
-                                   class="w-full bg-gray-600 hover:bg-gray-700 text-gray-500 font-bold py-2 px-4 rounded text-center block">
+                                   class="w-full bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded text-center block">
                                     Back to Orders
                                 </a>
                                 <a href="{{ route('user.products.index') }}"
-                                   class="w-full bg-blue-600 hover:bg-gray-700 text-gray-500 font-bold py-2 px-4 rounded text-center block">
+                                   class="w-full bg-blue-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded text-center block">
                                     Continue Shopping
                                 </a>
                             </div>

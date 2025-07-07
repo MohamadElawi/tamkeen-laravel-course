@@ -47,7 +47,7 @@
     </head>
     <body class="font-sans antialiased h-full bg-gray-50 dark:bg-gray-900">
         <div class="min-h-screen flex flex-col">
-            @if(request()->routeIs('admin.*'))
+            @if(request()->routeIs('admin.*') || request()->routeIs('manage.*') || request()->is('admin/*'))
                 @include('layouts.navigation')
             @else
                 @include('layouts.user-navigation')
