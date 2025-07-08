@@ -116,12 +116,44 @@
                             <div class="pt-6 border-t border-gray-200 dark:border-gray-700">
                                 <div class="flex flex-col sm:flex-row gap-4">
                                     @if($product->quantity > 0)
-                                        <button class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200">
-                                            Add to Cart
-                                        </button>
-                                        <button class="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200">
-                                            Buy Now
-                                        </button>
+                                        <!-- Add to Cart Form -->
+                                        <form action="{{ route('user.cart-items.store') }}" method="POST" class="flex-1">
+                                            @csrf
+                                            <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                            <input type="hidden" name="quantity" value="1">
+                                            @if($product->colors->count() > 0)
+                                                <select name="color_id" class="w-full mb-3 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" required>
+                                                    <option value="">Select Color</option>
+                                                    @foreach($product->colors as $color)
+                                                        <option value="{{ $color->id }}">{{ $color->title }}</option>
+                                                    @endforeach
+                                                </select>
+                                            @else
+                                                <input type="hidden" name="color_id" value="">
+                                            @endif
+                                            <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200">
+                                                Add to Cart
+                                            </button>
+                                        </form>
+                                        
+                                        <!-- Buy Now Form -->
+                                        <form action="{{ route('user.orders.create') }}" method="GET" class="flex-1">
+                                            <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                            <input type="hidden" name="quantity" value="1">
+                                            @if($product->colors->count() > 0)
+                                                <select name="color_id" class="w-full mb-3 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" required>
+                                                    <option value="">Select Color</option>
+                                                    @foreach($product->colors as $color)
+                                                        <option value="{{ $color->id }}">{{ $color->title }}</option>
+                                                    @endforeach
+                                                </select>
+                                            @else
+                                                <input type="hidden" name="color_id" value="">
+                                            @endif
+                                            <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200">
+                                                Buy Now
+                                            </button>
+                                        </form>
                                     @else
                                         <button disabled class="flex-1 bg-gray-400 text-white font-bold py-3 px-6 rounded-lg cursor-not-allowed">
                                             Out of Stock

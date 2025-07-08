@@ -19,7 +19,7 @@ class AddProductReqeust extends APIRequest
         return [
             'product_id' => ['required','numeric'] ,
             'quantity' => ['required','numeric' ,'min:1'],
-            'color_id' => ['required','exists:colors,id']
+            'color_id' => ['nullable','exists:colors,id']
         ];
     }
 }

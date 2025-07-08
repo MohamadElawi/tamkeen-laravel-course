@@ -154,4 +154,9 @@ class Product extends Model implements HasMedia
         });
     }
 
+
+    public function favourites(){
+        return $this->morphMany(UserFavourite::class ,'favourable');
+    }
+
 }

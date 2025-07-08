@@ -22,7 +22,7 @@ class OrderObserver
         if($order->getOriginal('status') == OrderStatusEnum::PENDING &&
             $order->status == OrderStatusEnum::ACCEPTED){
             $userEmail = $order->user->email;
-            Mail::to($userEmail)->send(new SendInvoiceMail($order));
+            Mail::to($userEmail)->queue(new SendInvoiceMail($order));
         }
     }
 

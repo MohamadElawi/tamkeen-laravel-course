@@ -17,7 +17,7 @@ Route::get('/', function () {
 
 
 
-Route::resource('products', ProductController::class);
+// Route::resource('products', ProductController::class);   
 
 // User Routes
 Route::middleware(['auth'])->group(function () {

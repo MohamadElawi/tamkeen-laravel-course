@@ -5,6 +5,7 @@ use App\Http\Controllers\API\CartItemsController;
 use App\Http\Controllers\User\Auth\LoginController;
 use App\Http\Controllers\User\Auth\RegisterController;
 use App\Http\Controllers\User\Category\CategoryController;
+use App\Http\Controllers\User\Favourite\UserFavouriteController;
 use App\Http\Controllers\User\Order\OrderController;
 use App\Http\Controllers\User\Product\ProductController;
 use App\Http\Controllers\User\Profile\ProfileController;
@@ -35,6 +36,13 @@ Route::middleware('auth:user')->group(function(){
     Route::resource('cart-items', CartItemsController::class);
 
     Route::apiResource('orders',OrderController::class)->except('destroy','update');
+
+    Route::get('products/{product_id}/add-to-favourite',[UserFavouriteController::class ,'addProductToFavourites']);
+    Route::get('products/{product_id}/remove-from-favourite',[UserFavouriteController::class ,'removeProductFromFavourites']);
+
+    Route::get('categories/{category_id}/toggle-favourite',[UserFavouriteController::class ,'toggleCategoryFavourite']);
+    Route::get('get-favourites',[UserFavouriteController::class ,'index']);
+
 });
 
 

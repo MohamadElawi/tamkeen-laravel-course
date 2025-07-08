@@ -26,6 +26,9 @@ class CartItemsController extends Controller
             if (!$request->color_id || !$product->colors->pluck('id')->contains($request->color_id)) {
                 return back()->with('error', 'Please select a valid color.');
             }
+        } else {
+            // If product doesn't have colors, set color_id to null
+            $request->merge(['color_id' => null]);
         }
 
         // Add to cart

@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Enums\Media\ProductMediaEnum;
+use App\Helpers\ImageDownloader;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -68,6 +70,30 @@ class ProductSeeder extends Seeder
                         'status' => 'active',
                         'slug' => $productData['slug'],
                     ]);
+
+                    // Download and attach main image
+                    $imageUrl = ImageDownloader::getProductImageUrl($index);
+                    $imagePath = ImageDownloader::downloadImage(
+                        $imageUrl, 
+                        "product-{$index}.jpg"
+                    );
+                    
+                    // Add main image to media collection
+                    $product->addMediaFromDisk($imagePath, 'public')
+                        ->toMediaCollection(ProductMediaEnum::MAIN_IMAGE->value);
+
+                    // Add some gallery images (2-4 images)
+                    $galleryCount = rand(2, 4);
+                    for ($i = 0; $i < $galleryCount; $i++) {
+                        $galleryImageUrl = ImageDownloader::getProductImageUrl($index + $i + 100); // Different random images
+                        $galleryImagePath = ImageDownloader::downloadImage(
+                            $galleryImageUrl, 
+                            "product-{$index}-gallery-{$i}.jpg"
+                        );
+                        
+                        $product->addMediaFromDisk($galleryImagePath, 'public')
+                            ->toMediaCollection(ProductMediaEnum::GALLERY->value);
+                    }
 
                     // Attach random categories
                     $product->categories()->attach(

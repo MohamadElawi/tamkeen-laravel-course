@@ -77,4 +77,8 @@ class User extends Authenticatable implements HasMedia
         });
     }
 
+    public function favourites(){
+        return $this->hasMany(UserFavourite::class);
+    }
+
 }

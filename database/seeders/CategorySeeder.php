@@ -2,10 +2,13 @@
 
 namespace Database\Seeders;
 
+use App\Enums\Media\CategoryMediaEnum;
+use App\Helpers\ImageDownloader;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class CategorySeeder extends Seeder
 {
@@ -26,12 +29,23 @@ class CategorySeeder extends Seeder
             ['name' => ['en' => 'Automotive', 'ar' => 'سيارات']],
         ];
 
-        foreach ($categories as $cat) {
-            Category::create([
+        foreach ($categories as $index => $cat) {
+            $category = Category::create([
                 'name' => $cat['name'],
-                'slug' => \Str::slug($cat['name']['en']),
+                'slug' => Str::slug($cat['name']['en']),
                 'status' => 'active',
             ]);
+
+            // Download and attach image
+            $imageUrl = ImageDownloader::getCategoryImageUrl($index);
+            $imagePath = ImageDownloader::downloadImage(
+                $imageUrl, 
+                "category-{$index}.jpg"
+            );
+            
+            // Add image to media collection
+            $category->addMediaFromDisk($imagePath, 'public')
+                ->toMediaCollection(CategoryMediaEnum::MAIN_IMAGE->value);
         }
     }
 }
