@@ -7,6 +7,8 @@ use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\API\OrderController;
 use App\Http\Controllers\API\ProductController;
 use App\Http\Controllers\Api\UserController;
+use App\Jobs\AJob;
+use App\Jobs\BJob;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -85,3 +87,18 @@ Route::get('UnAuthenticated', function () {
         "message" => "UnAuthenticated"
     ]);
 })->name('UnAuthenticated');
+
+
+Route::get('test-job',function(){
+//    // send a mail
+//    sleep(5);
+//
+//
+//    // processing image
+//    sleep(3);
+
+    dispatch(new AJob());
+    dispatch(new BJob());
+
+   return 'done';
+});

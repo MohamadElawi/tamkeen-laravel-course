@@ -47,29 +47,6 @@ class OrderService
         return $order ;
     }
 
-    public function createBuyNowOrder($userId, $product, $quantity, $colorId = null){
-        // Validate product availability
-        if ($product->quantity < $quantity) {
-            throw new \Exception('Insufficient product quantity available.');
-        }
-
-        $subTotal = $product->price * $quantity;
-        $tax = $this->calculateTaxRate();
-
-        $order = $this->saveOrder($userId, $subTotal, $tax);
-
-        // Create order product directly
-        OrderProduct::create([
-            'product_id' => $product->id,
-            'price' => $product->price,
-            'color_id' => $colorId,
-            'quantity' => $quantity,
-            'order_id' => $order->id,
-        ]);
-
-        return $order;
-    }
-
 
     public function calculateSubTotal($cartItems){
         return  $cartItems->sum(function ($item) {

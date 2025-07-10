@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\UserRegistered;
+use App\Jobs\SendWelcomeMailJob;
 use App\Mail\WelcomeMail;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
@@ -27,6 +28,8 @@ class SendWelcomeMail
 //        echo "Hello $username,Welcome <br>";
 
         // send an email to the new user
-        Mail::to($event->user->email)->send(new WelcomeMail($event->user));
+
+        dispatch(new SendWelcomeMailJob($event->user))->afterCommit();
+
     }
 }

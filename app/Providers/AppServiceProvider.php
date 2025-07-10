@@ -42,11 +42,11 @@ class AppServiceProvider extends ServiceProvider
 
         Order::observe(OrderObserver::class);
 
-       Authenticate::redirectUsing(function(Request $request){
-        if($request->is('admin/*')){
-            return redirect()->route('admin.login');
-        }
-        return redirect()->route('login');
-       });
+    //    Authenticate::redirectUsing(function(Request $request){
+    //     if($request->is('admin/*')){
+    //         return route('admin.login');
+    //     }
+    //     return route('login');
+    //    });
     }
 }

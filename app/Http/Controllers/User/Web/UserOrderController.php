@@ -49,46 +49,9 @@ class UserOrderController extends Controller
     /**
      * Show the form for creating a new order (checkout)
      */
-    public function create(Request $request)
+    public function create()
     {
         $userId = Auth::id();
-        
-        // Check if this is a "Buy Now" request
-        if ($request->has('product_id')) {
-            $product = \App\Models\Product::active()->findOrFail($request->product_id);
-            $quantity = $request->quantity ?? 1;
-            $colorId = $request->color_id;
-            
-            // Validate color if product has colors
-            if ($product->colors->count() > 0 && !$colorId) {
-                return back()->with('error', 'Please select a color for this product.');
-            }
-            
-            if ($product->colors->count() > 0 && $colorId) {
-                $color = $product->colors()->find($colorId);
-                if (!$color) {
-                    return back()->with('error', 'Please select a valid color for this product.');
-                }
-            }
-            
-            // Create a temporary cart item for checkout
-            $cartItems = collect([
-                (object) [
-                    'product' => $product,
-                    'quantity' => $quantity,
-                    'color' => $colorId ? \App\Models\Color::find($colorId) : null,
-                    'is_buy_now' => true
-                ]
-            ]);
-            
-            $subTotal = $product->price * $quantity;
-            $tax = config('taxes.enabled_tax') ? (float)config('taxes.tax_rate') : 0;
-            $total = $subTotal + ($subTotal * $tax / 100);
-            
-            return view('user.orders.create', compact('cartItems', 'subTotal', 'tax', 'total'));
-        }
-        
-        // Regular cart checkout
         $cartItems = \App\Models\CartItem::whereUserId($userId)
             ->with(['product', 'color'])
             ->get();
@@ -116,19 +79,7 @@ class UserOrderController extends Controller
     {
         try {
             $userId = Auth::id();
-            
-            // Check if this is a "Buy Now" order
-            if ($request->has('buy_now_product_id')) {
-                $product = \App\Models\Product::active()->findOrFail($request->buy_now_product_id);
-                $quantity = $request->buy_now_quantity ?? 1;
-                $colorId = $request->buy_now_color_id;
-                
-                // Create order directly without cart
-                $order = $this->orderService->createBuyNowOrder($userId, $product, $quantity, $colorId);
-            } else {
-                // Regular cart order
-                $order = $this->orderService->create($userId);
-            }
+            $order = $this->orderService->create($userId);
 
             return redirect()->route('user.orders.show', $order->id)
                 ->with('success', 'Order placed successfully!');

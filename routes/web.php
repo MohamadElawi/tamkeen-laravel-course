@@ -4,14 +4,16 @@ use App\Http\Controllers\Admin\AdminManagementController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\User\Web\UserProductController;
 use App\Http\Controllers\User\Web\UserOrderController;
+use App\Http\Controllers\User\Web\UserCategoryController;
 
 use App\Models\Order;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\User\web\CartItemsController;
+use App\Models\Category;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('welcome', compact('categories'));
 });
 
 
@@ -32,6 +34,10 @@ Route::middleware(['auth'])->group(function () {
     // User Product Routes
     Route::get('/products', [UserProductController::class, 'index'])->name('user.products.index');
     Route::get('/products/{id}', [UserProductController::class, 'show'])->name('user.products.show');
+
+    // User Category Routes
+    Route::get('/categories', [UserCategoryController::class, 'index'])->name('user.categories.index');
+    Route::get('/categories/{id}', [UserCategoryController::class, 'show'])->name('user.categories.show');
 
     // User Order Routes
     Route::get('/orders', [UserOrderController::class, 'index'])->name('user.orders.index');

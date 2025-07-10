@@ -103,7 +103,7 @@ class Product extends Model implements HasMedia
         if(!$colorId)
             return $builder ;
 
-        return    $builder->whereHas('colors',function($q)use($colorId){
+        return $builder->whereHas('colors',function($q)use($colorId){
             $q->where('colors.id',$colorId)
                 ->where('status',StatusEnum::ACTIVE);
         });

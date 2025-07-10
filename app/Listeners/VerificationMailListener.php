@@ -23,6 +23,7 @@ class VerificationMailListener
      */
     public function handle(UserRegistered $event): void
     {
-        Mail::to($event->user->email)->send(new SendVerificationCode($event->user));
+        Mail::to($event->user->email)
+            ->queue(new SendVerificationCode($event->user));
     }
 }

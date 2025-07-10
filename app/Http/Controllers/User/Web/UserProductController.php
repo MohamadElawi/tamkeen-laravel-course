@@ -13,44 +13,51 @@ class UserProductController extends Controller
 {
     public function index(Request $request)
     {
+        // $query = Product::query()
+        //     ->active()
+        //     ->with(['categories', 'colors', 'media']);
+
+        // // Search functionality
+        // if ($request->filled('search')) {
+        //     $search = $request->input('search');
+        //     $query->where(function($q) use($search) {
+        //         $q->where('name->en', 'like', "%$search%")
+        //           ->orWhere('name->ar', 'like', "%$search%");
+        //     });
+        // }
+
+        // // Category filter
+        // if ($request->filled('category_id')) {
+        //     $query->whereHas('categories', function($q) use($request) {
+        //         $q->where('categories.id', $request->category_id)
+        //           ->where('status', StatusEnum::ACTIVE);
+        //     });
+        // }
+
+        // // Color filter
+        // if ($request->filled('color_id')) {
+        //     $query->whereHas('colors', function($q) use($request) {
+        //         $q->where('colors.id', $request->color_id)
+        //           ->where('status', StatusEnum::ACTIVE);
+        //     });
+        // }
+
+        // // Price filter
+        // if ($request->filled('price_from')) {
+        //     $query->where('price', '>=', $request->price_from);
+        // }
+
+        // if ($request->filled('price_to')) {
+        //     $query->where('price', '<=', $request->price_to);
+        // }
+
         $query = Product::query()
-            ->active()
-            ->with(['categories', 'colors', 'media']);
-
-        // Search functionality
-        if ($request->filled('search')) {
-            $search = $request->input('search');
-            $query->where(function($q) use($search) {
-                $q->where('name->en', 'like', "%$search%")
-                  ->orWhere('name->ar', 'like', "%$search%");
-            });
-        }
-
-        // Category filter
-        if ($request->filled('category_id')) {
-            $query->whereHas('categories', function($q) use($request) {
-                $q->where('categories.id', $request->category_id)
-                  ->where('status', StatusEnum::ACTIVE);
-            });
-        }
-
-        // Color filter
-        if ($request->filled('color_id')) {
-            $query->whereHas('colors', function($q) use($request) {
-                $q->where('colors.id', $request->color_id)
-                  ->where('status', StatusEnum::ACTIVE);
-            });
-        }
-
-        // Price filter
-        if ($request->filled('price_from')) {
-            $query->where('price', '>=', $request->price_from);
-        }
-
-        if ($request->filled('price_to')) {
-            $query->where('price', '<=', $request->price_to);
-        }
-
+        //            ->withoutGlobalScope(ActiveScope::class)
+                    ->active()
+                    ->search($request->input('search'))
+                    ->colorFilter($request->input('color_id'))
+                    ->priceFilter($request->input('price_from'),$request->input('price_to'));
+        
         $products = $query->paginate(12);
 
         // Get categories and colors for filters
