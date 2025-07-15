@@ -15,6 +15,7 @@ use App\Services\OrderService;
 use App\Traits\TaxCalculatorTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class OrderController extends ApiController
 {
@@ -53,64 +54,16 @@ class OrderController extends ApiController
     {
         try {
             DB::beginTransaction();
-
-//            $cartItems = CartItem::whereUserId($this->userId)
-//                ->with('product', 'color')->get();
-//
-//
-//            foreach ($cartItems as $item) {
-//                if ($item->product->status != StatusEnum::ACTIVE ||
-//                    $item->product->quantity < $item->quantity)
-//                    return $this->sendError("product : {$item->product->name}
-//                 is not available");
-//            }
-//
-//            $subTotal = $cartItems->sum(function ($item) {
-//                return (int)$item->product->price * $item->quantity;
-//            });
-//
-//            $tax = 0;
-//            if (config('taxes.enabled_tax'))
-//                $tax = (float)config('taxes.tax_rate');
-//
-//
-//            $data = [
-//                'user_id' => $this->userId,
-//                'sub_total' => $subTotal,
-//                'status' => OrderStatusEnum::PENDING,
-//                'tax' => $tax,
-//                'total' => self::calculateTax($subTotal)
-//            ];
-//
-//
-//            $order = Order::create($data);
-//
-//
-//            $orderProducts = [];
-//            foreach ($cartItems as $item) {
-//                $orderProducts[] = [
-//                    'product_id' => $item->product_id,
-//                    'price' => $item->product->price,
-//                    'color_id' => $item->color_id,
-//                    'quantity' => $item->quantity,
-//                    'order_id' => $order->id ,
-//                    'created_at' => now() ,
-//                    'updated_at' => now()
-//                ];
-//            }
-//
-//            OrderProduct::insert($orderProducts);
-//
-//            CartItem::whereUserId($this->userId)->delete();
-
            $order = $this->orderService->create($this->userId);
 
             DB::commit();
+            Log::driver('order')->info('Order Created' ,['order_id' => $order->id , 'user_id' => $this->userId]);
             return $this->sendResponce(OrderResource::make($order) ,
                 'Order Created successfully');
 
         }catch (\Exception $exception){
             DB::rollBack();
+            Log::error($exception->getMessage());
             return $this->sendError($exception->getMessage());
         }
 

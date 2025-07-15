@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\API\Cart_ItemsController;
+
+use App\Exceptions\TestException;
 use App\Http\Controllers\API\CategoryController;
 use App\Http\Controllers\Api\ColorController;
 use App\Http\Controllers\Api\LoginController;
@@ -9,10 +10,14 @@ use App\Http\Controllers\API\ProductController;
 use App\Http\Controllers\Api\UserController;
 use App\Jobs\AJob;
 use App\Jobs\BJob;
+
 use App\Models\Product;
 use Illuminate\Http\Request;
+
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -102,3 +107,38 @@ Route::get('test-job',function(){
 
    return 'done';
 });
+
+
+
+Route::get('test-log',function(){
+    Log::info('Order created',['order_id' => 5]);
+//    Log::debug('');
+});
+
+
+Route::get('test-exception',function(){
+
+//    try{
+//        throw new ('error happened');
+//    }catch (Exception $exception){
+//        return response()->json($exception->getMessage(), $exception->getCode());
+//    }
+});
+
+
+Route::get('test-cache',function(){
+    Cache::put('name','mohamad');
+    Cache::put('name','ahmad');
+    Cache::put('email','mohamad@gmail.com');
+////    Cache::forget('name');
+//    Cache::flush();
+//    return [Cache::get('name') ,Cache::get('email')];
+
+
+    $products = Cache::rememberForever('products' ,function(){
+        return Product::get();
+    });
+
+    return $products;
+});
+

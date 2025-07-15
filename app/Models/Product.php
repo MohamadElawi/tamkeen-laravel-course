@@ -7,6 +7,7 @@ use App\Enums\StatusEnum;
 use App\Models\Scopes\ActiveScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -138,7 +139,7 @@ class Product extends Model implements HasMedia
     {
 
         self::created(function ($product) {
-
+            Cache::forget('products');
         });
 
         self::updated(function ($product) {

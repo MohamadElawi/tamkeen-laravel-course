@@ -9,6 +9,7 @@ use App\Services\OrderService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class UserOrderController extends Controller
 {
@@ -80,11 +81,12 @@ class UserOrderController extends Controller
         try {
             $userId = Auth::id();
             $order = $this->orderService->create($userId);
-
+            Log::driver('order')->info('Order Created' ,['order_id' => $order->id , 'user_id' => $userId]);
             return redirect()->route('user.orders.show', $order->id)
                 ->with('success', 'Order placed successfully!');
 
         } catch (\Exception $exception) {
+            Log::error($exception->getMessage());
             return back()->with('error', 'Failed to place order: ' . $exception->getMessage());
         }
     }

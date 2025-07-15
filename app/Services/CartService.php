@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Enums\StatusEnum;
+use App\Exceptions\InvalidCartItemsException;
 use App\Models\CartItem;
 
 class CartService
@@ -17,8 +18,10 @@ class CartService
         foreach ($cartItems as $item) {
             if ($item->product->status != StatusEnum::ACTIVE ||
                 $item->product->quantity < $item->quantity)
-                throw new \Exception("product : {$item->product->name}
-                 is not available");
+//                throw new \Exception("product : {$item->product->name}
+//                 is not available");
+                throw new InvalidCartItemsException("product : {$item->product->name}
+//                 is not available");
         }
     }
 
