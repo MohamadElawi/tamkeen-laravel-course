@@ -143,7 +143,7 @@ class Product extends Model implements HasMedia
         });
 
         self::updated(function ($product) {
-            //
+            Cache::forget('products');
         });
 
         self::deleted(function ($product) {

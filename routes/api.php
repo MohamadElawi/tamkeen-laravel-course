@@ -128,6 +128,8 @@ Route::get('test-exception',function(){
 
 Route::get('test-cache',function(){
     Cache::put('name','mohamad');
+
+    Cache::get('name');
     Cache::put('name','ahmad');
     Cache::put('email','mohamad@gmail.com');
 ////    Cache::forget('name');
@@ -135,7 +137,7 @@ Route::get('test-cache',function(){
 //    return [Cache::get('name') ,Cache::get('email')];
 
 
-    $products = Cache::rememberForever('products' ,function(){
+    $products = Cache::remember('products',600 ,function(){
         return Product::get();
     });
 

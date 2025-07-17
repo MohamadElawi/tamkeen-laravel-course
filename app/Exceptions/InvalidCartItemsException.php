@@ -7,9 +7,9 @@ use Illuminate\Support\Facades\Log;
 
 class InvalidCartItemsException extends Exception
 {
-    public function report(){
-        Log::driver('order')->error($this->getMessage());
-    }
+//    public function report(){
+//        Log::driver('order')->error($this->getMessage());
+//    }
 
 //    public function render(){
 //        return response()->json($this->getMessage());

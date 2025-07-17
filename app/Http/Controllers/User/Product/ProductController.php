@@ -10,6 +10,7 @@ use App\Http\Resources\User\Products\ProductResource;
 use App\Models\Product;
 use App\Models\Scopes\ActiveScope;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class ProductController extends ApiController
 {
@@ -20,6 +21,9 @@ class ProductController extends ApiController
 //        $query = Product::active();
 
 
+//        $products = Cache::remember('products' ,now()->addMinutes(45) ,function() use($request){
+//
+//        });
         $query = Product::query()
 //            ->withoutGlobalScope(ActiveScope::class)
             ->active()
@@ -27,45 +31,7 @@ class ProductController extends ApiController
             ->colorFilter($request->input('color_id'))
             ->priceFilter($request->input('price_from'),$request->input('price_to'));
 
-
-//        if($request->filled('search')){
-//            $search = $request->input('search');
-//
-//            $query->where(function($q) use($search){
-//                $q->where('name->en','like',"%$search%")
-//                    ->orWhere('name->ar','like',"%$search%")
-//                    ->orWhereHas('categories',function($q)use($search){
-//                        $q->where('name->en','like',"%$search%")
-//                            ->orWhere('name->ar','like',"%$search%")
-//                            ->where('status',StatusEnum::ACTIVE);
-//                        // todo
-//                    });
-//            });
-//
-//        }
-
-
-//        if($request->filled('color_id')){
-//            $query->whereHas('colors',function($q)use($request){
-//                $q->where('colors.id',$request->color_id)
-//                    ->where('status',StatusEnum::ACTIVE);
-//            });
-//        }
-
-//        if($request->filled('price_from')){
-//            $products->where('price','>=',$request->input('price_from'));
-//        }
-//
-//        if($request->filled('price_to')){
-//            $products->where('price','<=',$request->input('price_to'));
-//        }
-
-
-//        if($request->filled('price_from') && $request->filled('price_to')){
-//            $query->priceFilter($request->input('price_from'),$request->input('price_to'));
-//        }
-
-        $products =  $query
+         $products =  $query
             ->with('categories' ,'colors','media')
             ->paginate($request->count) ;
 
