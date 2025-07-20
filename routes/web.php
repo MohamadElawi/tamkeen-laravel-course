@@ -13,13 +13,13 @@ use App\Http\Controllers\User\web\CartItemsController;
 use App\Models\Category;
 
 Route::get('/', function () {
-    return view('welcome', compact('categories'));
+
 });
 
 
 
 
-// Route::resource('products', ProductController::class);   
+// Route::resource('products', ProductController::class);
 
 // User Routes
 Route::middleware(['auth'])->group(function () {

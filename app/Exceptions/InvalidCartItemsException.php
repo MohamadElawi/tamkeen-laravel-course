@@ -11,9 +11,9 @@ class InvalidCartItemsException extends Exception
 //        Log::driver('order')->error($this->getMessage());
 //    }
 
-//    public function render(){
-//        return response()->json($this->getMessage());
-//    }
+    public function render(){
+        return response()->json($this->getMessage());
+    }
 
     public function context(): array{
         $user = auth('web')->user();

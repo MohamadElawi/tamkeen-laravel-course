@@ -26,13 +26,7 @@ class UserProductController extends Controller
         //     });
         // }
 
-        // // Category filter
-        // if ($request->filled('category_id')) {
-        //     $query->whereHas('categories', function($q) use($request) {
-        //         $q->where('categories.id', $request->category_id)
-        //           ->where('status', StatusEnum::ACTIVE);
-        //     });
-        // }
+
 
         // // Color filter
         // if ($request->filled('color_id')) {
@@ -56,8 +50,9 @@ class UserProductController extends Controller
                     ->active()
                     ->search($request->input('search'))
                     ->colorFilter($request->input('color_id'))
+                    ->CategoryFilter($request->input('category_id'))
                     ->priceFilter($request->input('price_from'),$request->input('price_to'));
-        
+
         $products = $query->paginate(12);
 
         // Get categories and colors for filters

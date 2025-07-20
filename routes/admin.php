@@ -4,6 +4,7 @@
 use App\Http\Controllers\Admin\Admin\AdminController;
 use App\Http\Controllers\Admin\Admin\PermissionController;
 use App\Http\Controllers\Admin\Auth\LoginController;
+use App\Http\Controllers\Admin\Notification\NotificationController;
 use App\Http\Controllers\Admin\Order\OrderController;
 use Illuminate\Support\Facades\Route;
 
@@ -27,3 +28,6 @@ Route::middleware(['auth:admin','role:admin|super-admin'])->group(function () {
     Route::get('orders/reject/{id}',[OrderController::class ,'reject']);
 });
 
+
+
+Route::get('send-notification',NotificationController::class);

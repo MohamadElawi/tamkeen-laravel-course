@@ -24,7 +24,6 @@ class Admin extends Authenticatable implements MustVerifyEmail
 
     protected $guard_name = ['admin','admin-web'];
 
-    protected function getDefaultGuardName(): string { return 'admin-web'; }
     protected $hidden = [
         'password',
         'remember_token',

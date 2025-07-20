@@ -17,22 +17,23 @@ class AdminSeeder extends Seeder
      */
     public function run(): void
     {
-//        Admin::create([
-//            'name' => 'super-admin' ,
-//            'email' => 'super@gmail.com' ,
-//            'phone' => '09666688546' ,
-//            'password' => '123456789' ,
-////            'password' => Hash::make('123456789'),
-//            'status' => StatusEnum::ACTIVE
-//        ]);
+        Admin::firstOrCreate([
+            'name' => 'super-admin' ,
+            'email' => 'super@gmail.com' ,
+            'phone' => '09666688546'
+        ],[
+            'password' => '123456789' ,
+//            'password' => Hash::make('123456789'),
+            'status' => StatusEnum::ACTIVE
+        ]);
 
 
         $admin = Admin::where('email','super@gmail.com')->first();
         $admin->assignRole(RoleEnum::SUPER_ADMIN);
 
 
-        $admin = Admin::where('email','admin@gmail.com')->first();
-        $admin->assignRole(RoleEnum::ADMIN);
+//        $admin = Admin::where('email','admin@gmail.com')->first();
+//        $admin->assignRole(RoleEnum::ADMIN);
 
         $admin->givePermissionTo(PermissionEnum::VIEW_ADMINS);
     }

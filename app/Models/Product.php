@@ -55,6 +55,13 @@ class Product extends Model implements HasMedia
     }
 
 
+    public function favourites(){
+        return $this->morphMany(UserFavourite::class ,'favourable');
+    }
+
+
+    ############### methods ################
+
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection(ProductMediaEnum::MAIN_IMAGE->value)
@@ -110,6 +117,15 @@ class Product extends Model implements HasMedia
         });
     }
 
+
+    public function scopeCategoryFilter($query ,$categoryId){
+        if($categoryId){
+                 $query->whereHas('categories', function($q) use($categoryId) {
+                     $q->where('categories.id', $categoryId)
+                       ->where('status', StatusEnum::ACTIVE);
+                 });
+        }
+    }
     ################### methods ###################
 
     //    public function getPriceAttribute($price)
@@ -156,8 +172,6 @@ class Product extends Model implements HasMedia
     }
 
 
-    public function favourites(){
-        return $this->morphMany(UserFavourite::class ,'favourable');
-    }
+
 
 }

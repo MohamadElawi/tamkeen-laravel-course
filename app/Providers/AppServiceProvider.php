@@ -3,12 +3,19 @@
 namespace App\Providers;
 
 
+use App\Classes\Notification;
 use App\Events\UserRegistered;
+use App\Http\Controllers\Admin\Admin\AdminController;
+use App\Http\Controllers\Admin\Notification\NotificationController;
+use App\Http\Controllers\User\Notification\NotificationController as UserNotificationController;
+use App\Interfaces\NotificationInterface;
 use App\Listeners\AssignDefualtPermission;
 use App\Listeners\SendNotification;
 use App\Listeners\SendWelcomeMail;
 use App\Models\Order;
 use App\Observers\OrderObserver;
+use App\Services\MailNotificationService;
+use App\Services\SMSNotificationService;
 use Illuminate\Auth\Middleware\Authenticate;
 use Illuminate\Auth\Middleware\RedirectIfAuthenticated;
 use Illuminate\Http\Request;
@@ -22,7 +29,35 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(NotificationInterface::class, function(){
+            $senderName = 'mohamad' ;
+            $password = '123456' ;
+
+            return new MailNotificationService($senderName ,$password);
+        });
+
+
+        $this->app->bind('notification', SMSNotificationService::class);
+
+        // dependency injection
+//        $this->app->singleton(MailNotificationService::class);
+
+//        $this->app->bind(MailNotificationService::class ,function(){
+//            $senderName = 'mohamad' ;
+//            $password = '123456' ;
+//
+//            return new MailNotificationService($senderName ,$password);
+//        });
+
+        $this->app->when(NotificationController::class)
+                ->needs(Notification::class)
+                ->give(MailNotificationService::class);
+
+
+        $this->app->when(UserNotificationController::class)
+                ->needs(Notification::class)
+                ->give(SMSNotificationService::class);
+
     }
 
     /**
@@ -48,5 +83,8 @@ class AppServiceProvider extends ServiceProvider
     //     }
     //     return route('login');
     //    });
+
+
     }
+
 }
