@@ -2,10 +2,12 @@
 
 namespace App\Services;
 
+use App\Enums\Media\ProductMediaEnum;
 use App\Enums\OrderStatusEnum;
 use App\Models\Order;
 use App\Models\OrderProduct;
 use App\Traits\TaxCalculatorTrait;
+use Illuminate\Support\Facades\Cache;
 
 class OrderService
 {
@@ -38,13 +40,17 @@ class OrderService
 
         $tax = $this->calculateTaxRate();
 
-        $order = $this->saveOrder($userId ,$subTotal ,$tax);
+
+
+        $order = $this->saveOrder($userId ,$subTotal ,$tax );
 
         $this->saveOrderProducts($order ,$cartItems);
+        $session = $this->createSession($cartItems ,$order);
 
         $this->cartService->removeUserCart($userId);
 
-        return $order ;
+//        return $order ;
+        return $session->url;
     }
 
 
@@ -63,7 +69,7 @@ class OrderService
     }
 
 
-    public function saveOrder($userId ,$subTotal, $tax){
+    public function saveOrder($userId ,$subTotal, $tax ){
         return Order::create([
             'user_id' => $userId,
             'sub_total' => $subTotal,
@@ -90,5 +96,35 @@ class OrderService
         OrderProduct::insert($orderProducts);
     }
 
+
+    public function createSession($cartItems ,$order){
+        \Stripe\Stripe::setApiKey(config('stripe.secret_key'));
+
+        $lineItems = [];
+
+        foreach ($cartItems as $cartItem) {
+            $lineItems[] = [
+                'price_data' => [
+                    'currency' => 'usd' ,
+                    'product_data' => [
+                        'name' => $cartItem->product->name,
+                    ],
+                    'unit_amount' => $cartItem->product->price * 100
+                ],
+                'quantity' => $cartItem->quantity
+            ];
+
+        }
+
+        // Create Stripe Checkout Session
+        return \Stripe\Checkout\Session::create([
+            'payment_method_types' => ['card'],
+            'line_items' => $lineItems,
+            'mode' => 'payment',
+            'success_url' => route('checkout.success') ."?session_id={CHECKOUT_SESSION_ID}&order_id={$order->id}",
+            // localhost:8000/user/orders/checkout/
+            'cancel_url' => route('checkout.cancel'),
+        ]);
+    }
 
 }

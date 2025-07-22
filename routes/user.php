@@ -11,6 +11,7 @@ use App\Http\Controllers\User\Notification\NotificationController;
 use App\Http\Controllers\User\Order\OrderController;
 use App\Http\Controllers\User\Product\ProductController;
 use App\Http\Controllers\User\Profile\ProfileController;
+use App\Http\Controllers\User\Web\UserOrderController;
 use App\Interfaces\NotificationInterface;
 use App\Services\MailNotificationService;
 use App\Services\OrderService;
@@ -21,6 +22,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('register',[RegisterController::class ,'register']);
 Route::post('login',[LoginController::class ,'login']);
+
 
 Route::middleware('auth:user')->group(function(){
     Route::get('logout',[LoginController::class ,'logout']);
@@ -51,6 +53,13 @@ Route::middleware('auth:user')->group(function(){
 
 
 });
+
+
+
+Route::get('orders/checkout/success',[UserOrderController::class ,'success'])->name('checkout.success');
+Route::get('orders/checkout/cancel',[UserOrderController::class ,'cancel'])->name('checkout.cancel');
+Route::post('orders/checkout/handle-webhook',[UserOrderController::class ,'handleWebhook']);
+
 
 Route::get('send-notification',NotificationController::class);
 

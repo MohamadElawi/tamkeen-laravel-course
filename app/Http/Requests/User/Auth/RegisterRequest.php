@@ -3,6 +3,7 @@
 namespace App\Http\Requests\User\Auth;
 
 use App\Http\Requests\APIRequest;
+use App\Rules\VerifiyEmail;
 use Illuminate\Foundation\Http\FormRequest;
 
 class RegisterRequest extends APIRequest
@@ -18,7 +19,7 @@ class RegisterRequest extends APIRequest
     {
         return [
             'name' => ['required','string' ,'max:50'] ,
-            'email' => ['required','email','unique:users,email'],
+            'email' => ['required','email','unique:users,email' ,new VerifiyEmail()],
             'password' => ['required' ,'string' ,'min:8','confirmed'] ,
 //            'password_confirmation' => ['required' ,'same:password']
         ];

@@ -12,9 +12,11 @@ use App\Jobs\AJob;
 use App\Jobs\BJob;
 
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -144,3 +146,13 @@ Route::get('test-cache',function(){
     return $products;
 });
 
+
+
+Route::get('test-user/{user}',function(User $user){
+    return $user ;
+    dd($user);
+//    User::find($user);
+//    return User::get();
+
+    return DB::table('users')->get();
+});

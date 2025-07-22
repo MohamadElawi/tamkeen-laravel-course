@@ -13,6 +13,7 @@ use App\Listeners\AssignDefualtPermission;
 use App\Listeners\SendNotification;
 use App\Listeners\SendWelcomeMail;
 use App\Models\Order;
+use App\Models\User;
 use App\Observers\OrderObserver;
 use App\Services\MailNotificationService;
 use App\Services\SMSNotificationService;
@@ -20,6 +21,7 @@ use Illuminate\Auth\Middleware\Authenticate;
 use Illuminate\Auth\Middleware\RedirectIfAuthenticated;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -29,12 +31,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(NotificationInterface::class, function(){
-            $senderName = 'mohamad' ;
-            $password = '123456' ;
-
-            return new MailNotificationService($senderName ,$password);
-        });
+//        $this->app->bind(NotificationInterface::class, function(){
+//            $senderName = 'mohamad' ;
+//            $password = '123456' ;
+//
+//            return new MailNotificationService($senderName ,$password);
+//        });
 
 
         $this->app->bind('notification', SMSNotificationService::class);
@@ -50,12 +52,12 @@ class AppServiceProvider extends ServiceProvider
 //        });
 
         $this->app->when(NotificationController::class)
-                ->needs(Notification::class)
+                ->needs(NotificationInterface::class)
                 ->give(MailNotificationService::class);
 
 
         $this->app->when(UserNotificationController::class)
-                ->needs(Notification::class)
+                ->needs(NotificationInterface::class)
                 ->give(SMSNotificationService::class);
 
     }
@@ -84,7 +86,9 @@ class AppServiceProvider extends ServiceProvider
     //     return route('login');
     //    });
 
-
+//        Route::bind('user',function($value){
+//            return User::where('email',$value)->firstOrFail();
+//        });
     }
 
 }

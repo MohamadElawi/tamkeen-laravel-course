@@ -9,8 +9,12 @@ use Illuminate\Http\Request;
 
 class NotificationController extends Controller
 {
-    public function __invoke(Notification $notification)
+    public function __construct(protected NotificationInterface $notification)
     {
-        return $notification->send('new user registered');
+    }
+
+    public function __invoke()
+    {
+        return $this->notification->send('new user registered');
     }
 }

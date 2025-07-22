@@ -25,10 +25,10 @@ class Notification extends Facade
 //        return (new SMSNotificationService())->send($arguments[0]);
 //    }
 
-//public function __call(string $name, array $arguments)
-//{
-//    // TODO: Implement __call() method.
-//}
+//    public function __call(string $name, array $arguments)
+//    {
+//        // TODO: Implement __call() method.
+//    }
 
 
 }

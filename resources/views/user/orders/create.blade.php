@@ -5,6 +5,19 @@
         </h2>
     </x-slot>
 
+    <div class="flex justify-end">
+        @if(session('error'))
+            <div class="alert alert-danger text-red-600">
+                {{ session('error') }}
+            </div>
+        @endif
+        @if(session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+    </div>
+
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <!-- Page Header -->
@@ -109,7 +122,7 @@
                             <!-- Place Order Button -->
                             <form method="POST" action="{{ route('user.orders.store') }}" class="mt-6">
                                 @csrf
-                                <button type="submit"       
+                                <button type="submit"
                                         class="w-full bg-green-600 hover:bg-gray-700 text-white font-bold py-3 px-4 rounded text-center block">
                                     Place Order
                                 </button>
