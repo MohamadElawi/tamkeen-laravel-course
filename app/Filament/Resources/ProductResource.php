@@ -56,7 +56,12 @@ class ProductResource extends Resource
                       ->maxFiles(2)
                       ->imageEditor(),
 
-                Forms\Components\Select::make('category.name')
+
+                // create city => state_id => relation (state)
+//                Forms\Components\Select::make('state_id')
+//                    ->relationship('state','name')
+
+
 
             ]);
     }

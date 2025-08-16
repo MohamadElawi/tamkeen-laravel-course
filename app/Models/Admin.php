@@ -22,7 +22,7 @@ class Admin extends Authenticatable implements MustVerifyEmail
         'status',
     ];
 
-    protected $guard_name = ['admin','admin-web'];
+    protected $guard_name = 'admin-web';
 
     protected $hidden = [
         'password',

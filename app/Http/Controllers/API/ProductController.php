@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateColorsRequest;
 use App\Http\Resources\ProductResource;
 use App\Http\Requests\ProductRequest;
 use App\Models\Product;
+use App\Policies\ProductPolicy;
 use App\Services\ProductService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
